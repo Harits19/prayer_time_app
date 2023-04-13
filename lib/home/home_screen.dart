@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prayer_time_app/constans/k_size.dart';
 import 'package:prayer_time_app/constans/k_text_style.dart';
-import 'package:prayer_time_app/home/PrayerView.dart';
+import 'package:prayer_time_app/home/prayer_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

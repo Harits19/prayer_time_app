@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prayer_time_app/home/HomeScreen.dart';
+import 'package:prayer_time_app/home/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
