@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/home/home_screen.dart';
+import 'package:prayer_time_app/models/response_prayer_time_model.dart';
+import 'package:prayer_time_app/state/prayer_time_state.dart';
+
+final prayerTimeState = StateNotifierProvider<PrayerTimeState, PrayerTimeModel?>(
+  (ref) => PrayerTimeState(null)..getPrayerTime(),
+);
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

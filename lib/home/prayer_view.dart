@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:prayer_time_app/constans/k_size.dart';
 
 class PrayerView extends StatelessWidget {
-  const PrayerView({super.key});
+  const PrayerView({
+    super.key,
+    this.prayer,
+    this.time,
+  });
+
+  final String? prayer;
+  final String? time;
 
   @override
   Widget build(BuildContext context) {
@@ -11,15 +18,15 @@ class PrayerView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(KSize.s16),
         child: Row(
-          children: const [
+          children: [
             Expanded(
-              child: Text('Shubuh'),
+              child: Text(prayer ?? '-'),
             ),
             Expanded(
               child: Text(
-                '04:29',
+                time ?? '-',
                 textAlign: TextAlign.right,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w800,
                 ),
               ),
