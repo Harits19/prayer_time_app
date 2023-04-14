@@ -53,6 +53,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final schedule = prayerTime?.jadwal;
     final mappedPrayer = schedule?.toMappedTimeOfDay();
     selectedPrayer = TimeOfDay.now().nextPrayer(mappedPrayer);
+    final currentPrayer = TimeOfDay.now().currentPrayer(mappedPrayer);
     final nextPrayer = selectedPrayer?.key ?? '-';
 
     ref.listen(
@@ -92,7 +93,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ),
                       Text(
-                        nextPrayer,
+                        currentPrayer?.key ?? "-",
                         style: TextStyle(
                           fontSize: KSize.s32,
                           fontWeight: FontWeight.w900,

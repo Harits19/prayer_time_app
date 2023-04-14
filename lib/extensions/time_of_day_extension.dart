@@ -30,6 +30,21 @@ extension TimeOfDayExtension on TimeOfDay? {
     return tempNextPrayer;
   }
 
+  MapEntry<String, TimeOfDay?>? currentPrayer(
+      Map<String, TimeOfDay?>? mappedPrayer) {
+    if (mappedPrayer == null) return null;
+    MapEntry<String, TimeOfDay?>? tempNextPrayer;
+    for (final prayer in mappedPrayer.entries) {
+      final timePrayer = prayer.value;
+      if (timePrayer == null) continue;
+      final isBigger = TimeOfDay.now().isBigger(timePrayer);
+      if (isBigger) {
+        tempNextPrayer = prayer;
+      }
+    }
+    return tempNextPrayer;
+  }
+
   TimeOfDay? different(TimeOfDay? other) {
     if (this == null || other == null) return null;
     final firsTime = toDouble();
