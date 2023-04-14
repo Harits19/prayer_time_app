@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/home/home_screen.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
-import 'package:prayer_time_app/state/prayer_time_state.dart';
+import 'package:prayer_time_app/services/prayer_time_services.dart';
 
-final prayerTimeState = StateNotifierProvider<PrayerTimeState, PrayerTimeModel?>(
-  (ref) => PrayerTimeState(null)..getPrayerTime(),
+final prayerTimeState = FutureProvider<PrayerTimeModel?>(
+  (ref) => PrayerTimeServices.getPrayerTime(),
 );
 
 void main() {

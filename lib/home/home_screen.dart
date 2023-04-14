@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/constans/k_size.dart';
 import 'package:prayer_time_app/constans/k_text_style.dart';
+import 'package:prayer_time_app/extensions/int_extension.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
+import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
 import 'package:prayer_time_app/home/prayer_view.dart';
 import 'package:prayer_time_app/main.dart';
 
@@ -14,10 +18,61 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  TimeOfDay? countDown;
+  Timer? timer;
+  MapEntry<String, TimeOfDay?>? selectedPrayer;
+  int second = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      showDialog(
+        context: context,
+        builder: (_) => const Center(child: CircularProgressIndicator()),
+      );
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        if (selectedPrayer == null) return;
+        countDown = selectedPrayer?.value.different(TimeOfDay.now());
+        second = DateTime.now().second;
+        setState(() {});
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final prayerState = ref.watch(prayerTimeState);
-    final prayerTime = prayerState?.jadwal;
+    final prayerWatch = ref.watch(prayerTimeState);
+    final prayerTime = prayerWatch.value;
+    final schedule = prayerTime?.jadwal;
+    final mappedPrayer = schedule?.toMappedTimeOfDay();
+    selectedPrayer = TimeOfDay.now().nextPrayer(mappedPrayer);
+    final nextPrayer = selectedPrayer?.key ?? '-';
+
+    ref.listen(
+      prayerTimeState,
+      (prev, next) {
+        if (!next.isLoading) {
+          Navigator.pop(context);
+        }
+      },
+      onError: (err, stc) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              err.toString(),
+            ),
+          ),
+        );
+      },
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -27,6 +82,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Row(
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         'Sekarang waktu',
@@ -36,7 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ),
                       Text(
-                        'Ashar',
+                        nextPrayer,
                         style: TextStyle(
                           fontSize: KSize.s32,
                           fontWeight: FontWeight.w900,
@@ -61,7 +117,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               width: KSize.s4,
                             ),
                             Text(
-                              prayerState?.lokasi.toCapitalize() ?? '-',
+                              prayerTime?.lokasi.toCapitalize() ?? '-',
                               style: const TextStyle(
                                 fontSize: KSize.s12,
                               ),
@@ -72,7 +128,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           height: KSize.s4,
                         ),
                         Text(
-                          'Magrib -02:04:27',
+                          '- ${countDown?.to24Format()}:${(60 - second).addLeadingZeroIfNeeded()}',
                           style: KTextStyle.date.copyWith(
                               color: Theme.of(context).colorScheme.secondary),
                         )
@@ -87,12 +143,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Row(
                 children: [
                   Text(
-                    prayerTime?.date.formatDate() ?? '-',
+                    schedule?.date.formatDateGeorgian() ?? '-',
                     style: KTextStyle.date,
                   ),
                   const Spacer(),
-                  const Text(
-                    '22 Ramadhan 1444 H',
+                  Text(
+                    schedule?.date.formatDateHijri() ?? '-',
                     style: KTextStyle.date,
                   ),
                 ],
@@ -104,21 +160,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(
                 height: KSize.s16,
               ),
-              ...{
-                'Imsak': prayerTime?.imsak,
-                'Shubuh': prayerTime?.subuh,
-                'Terbit': prayerTime?.terbit,
-                'Dhuha': prayerTime?.dhuha,
-                'Dzuhur': prayerTime?.dzuhur,
-                'Ashar': prayerTime?.ashar,
-                'Magrib': prayerTime?.maghrib,
-                'Isya': prayerTime?.isya,
-              }.entries.map(
-                    (e) => PrayerView(
-                      prayer: e.key,
-                      time: e.value,
-                    ),
+              if (mappedPrayer != null)
+                ...mappedPrayer.entries.map(
+                  (e) => PrayerView(
+                    isActive: e.key == nextPrayer,
+                    prayer: e.key,
+                    time: e.value?.format(context),
                   ),
+                ),
             ],
           ),
         ),

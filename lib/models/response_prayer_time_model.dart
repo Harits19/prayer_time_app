@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:prayer_time_app/extensions/string_extension.dart';
+
 class ResponsePrayerTimeModel {
   final bool? status;
   final PrayerTimeModel? data;
@@ -8,13 +11,12 @@ class ResponsePrayerTimeModel {
   });
 
   ResponsePrayerTimeModel.fromJson(Map<String, dynamic> json)
-    : status = json['status'] as bool?,
-      data = (json['data'] as Map<String,dynamic>?) != null ? PrayerTimeModel.fromJson(json['data'] as Map<String,dynamic>) : null;
+      : status = json['status'] as bool?,
+        data = (json['data'] as Map<String, dynamic>?) != null
+            ? PrayerTimeModel.fromJson(json['data'] as Map<String, dynamic>)
+            : null;
 
-  Map<String, dynamic> toJson() => {
-    'status' : status,
-    'data' : data?.toJson()
-  };
+  Map<String, dynamic> toJson() => {'status': status, 'data': data?.toJson()};
 }
 
 class PrayerTimeModel {
@@ -33,19 +35,23 @@ class PrayerTimeModel {
   });
 
   PrayerTimeModel.fromJson(Map<String, dynamic> json)
-    : id = json['id'] as String?,
-      lokasi = json['lokasi'] as String?,
-      daerah = json['daerah'] as String?,
-      koordinat = (json['koordinat'] as Map<String,dynamic>?) != null ? Koordinat.fromJson(json['koordinat'] as Map<String,dynamic>) : null,
-      jadwal = (json['jadwal'] as Map<String,dynamic>?) != null ? Jadwal.fromJson(json['jadwal'] as Map<String,dynamic>) : null;
+      : id = json['id'] as String?,
+        lokasi = json['lokasi'] as String?,
+        daerah = json['daerah'] as String?,
+        koordinat = (json['koordinat'] as Map<String, dynamic>?) != null
+            ? Koordinat.fromJson(json['koordinat'] as Map<String, dynamic>)
+            : null,
+        jadwal = (json['jadwal'] as Map<String, dynamic>?) != null
+            ? Jadwal.fromJson(json['jadwal'] as Map<String, dynamic>)
+            : null;
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'lokasi' : lokasi,
-    'daerah' : daerah,
-    'koordinat' : koordinat?.toJson(),
-    'jadwal' : jadwal?.toJson()
-  };
+        'id': id,
+        'lokasi': lokasi,
+        'daerah': daerah,
+        'koordinat': koordinat?.toJson(),
+        'jadwal': jadwal?.toJson()
+      };
 }
 
 class Koordinat {
@@ -62,17 +68,13 @@ class Koordinat {
   });
 
   Koordinat.fromJson(Map<String, dynamic> json)
-    : lat = json['lat'] as double?,
-      lon = json['lon'] as double?,
-      lintang = json['lintang'] as String?,
-      bujur = json['bujur'] as String?;
+      : lat = json['lat'] as double?,
+        lon = json['lon'] as double?,
+        lintang = json['lintang'] as String?,
+        bujur = json['bujur'] as String?;
 
-  Map<String, dynamic> toJson() => {
-    'lat' : lat,
-    'lon' : lon,
-    'lintang' : lintang,
-    'bujur' : bujur
-  };
+  Map<String, dynamic> toJson() =>
+      {'lat': lat, 'lon': lon, 'lintang': lintang, 'bujur': bujur};
 }
 
 class Jadwal {
@@ -101,27 +103,40 @@ class Jadwal {
   });
 
   Jadwal.fromJson(Map<String, dynamic> json)
-    : tanggal = json['tanggal'] as String?,
-      imsak = json['imsak'] as String?,
-      subuh = json['subuh'] as String?,
-      terbit = json['terbit'] as String?,
-      dhuha = json['dhuha'] as String?,
-      dzuhur = json['dzuhur'] as String?,
-      ashar = json['ashar'] as String?,
-      maghrib = json['maghrib'] as String?,
-      isya = json['isya'] as String?,
-      date = json['date'] as String?;
+      : tanggal = json['tanggal'] as String?,
+        imsak = json['imsak'] as String?,
+        subuh = json['subuh'] as String?,
+        terbit = json['terbit'] as String?,
+        dhuha = json['dhuha'] as String?,
+        dzuhur = json['dzuhur'] as String?,
+        ashar = json['ashar'] as String?,
+        maghrib = json['maghrib'] as String?,
+        isya = json['isya'] as String?,
+        date = json['date'] as String?;
 
   Map<String, dynamic> toJson() => {
-    'tanggal' : tanggal,
-    'imsak' : imsak,
-    'subuh' : subuh,
-    'terbit' : terbit,
-    'dhuha' : dhuha,
-    'dzuhur' : dzuhur,
-    'ashar' : ashar,
-    'maghrib' : maghrib,
-    'isya' : isya,
-    'date' : date
-  };
+        'tanggal': tanggal,
+        'imsak': imsak,
+        'subuh': subuh,
+        'terbit': terbit,
+        'dhuha': dhuha,
+        'dzuhur': dzuhur,
+        'ashar': ashar,
+        'maghrib': maghrib,
+        'isya': isya,
+        'date': date
+      };
+
+  Map<String, TimeOfDay?> toMappedTimeOfDay() {
+    return {
+      'Imsak': imsak,
+      'Shubuh': subuh,
+      'Terbit': terbit,
+      'Dhuha': dhuha,
+      'Dzuhur': dzuhur,
+      'Ashar': ashar,
+      'Magrib': maghrib,
+      'Isya': isya,
+    }.map((key, value) => MapEntry(key, value.toTimeOfDay()));
+  }
 }
