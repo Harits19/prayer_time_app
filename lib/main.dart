@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/home/home_screen.dart';
 
-// TODO handle error on provider
-
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
