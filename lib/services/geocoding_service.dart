@@ -23,8 +23,11 @@ class GeocodingService {
     }
     final position = await Geolocator.getCurrentPosition();
 
-    final placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+    final placemarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+      localeIdentifier: 'id',
+    );
 
     final subArea = placemarks.first.subAdministrativeArea;
     if (subArea?.isEmpty ?? false) {

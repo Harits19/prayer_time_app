@@ -5,6 +5,7 @@ import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/home/loading_view.dart';
 import 'package:prayer_time_app/main.dart';
 import 'package:prayer_time_app/models/response_city_model.dart';
+import 'package:prayer_time_app/state.dart';
 
 class CityView extends ConsumerStatefulWidget {
   const CityView({

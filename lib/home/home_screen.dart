@@ -10,8 +10,8 @@ import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
 import 'package:prayer_time_app/home/city_view.dart';
 import 'package:prayer_time_app/home/loading_view.dart';
 import 'package:prayer_time_app/home/prayer_view.dart';
-import 'package:prayer_time_app/main.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
+import 'package:prayer_time_app/state.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -162,14 +162,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(
                 height: KSize.s16,
               ),
-              if (mappedPrayer != null)
-                ...mappedPrayer.entries.map(
-                  (e) => PrayerView(
-                    isActive: e.key == nextPrayer,
-                    prayer: e.key,
-                    time: e.value?.format(context),
-                  ),
+              ...mappedPrayer.entries.map(
+                (e) => PrayerView(
+                  isActive: e.key == nextPrayer,
+                  prayer: e.key,
+                  time: e.value?.format(context),
                 ),
+              ),
+              SwitchListTile(
+                value: true,
+                title: const Text('Deteksi lokasi otomatis'),
+                onChanged: (val) {},
+              )
             ],
           ),
         ),
