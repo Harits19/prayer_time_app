@@ -35,6 +35,7 @@ dependencies:
   geocoding: ^2.1.0
   geolocator: ^9.0.2
   hijri: ^3.0.0
+  home_widget: ^0.2.0+1
   http: ^0.13.5
   intl: ^0.18.0
 
