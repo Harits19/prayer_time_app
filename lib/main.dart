@@ -7,11 +7,11 @@ import 'package:prayer_time_app/playground.dart';
 // TODO save cache to local storage
 // TODO implement widget
 
-void main() {
+void mainTemp() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-void mainPlayground() {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   HomeWidget.registerBackgroundCallback(backgroundCallback);
   runApp(const MyAppPlayground());

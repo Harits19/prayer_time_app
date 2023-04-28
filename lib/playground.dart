@@ -44,14 +44,28 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   int _counter = 0;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      loadData();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
-    HomeWidget.widgetClicked.listen((Uri? uri) => loadData());
+    // HomeWidget.widgetClicked.listen((Uri? uri) => loadData());
     loadData(); // This will load data from widget every time app is opened
+    WidgetsBinding.instance.addObserver(this);
   }
 
   void loadData() async {
