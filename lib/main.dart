@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/home/home_screen.dart';
 
-// TODO auto detect location switch
-// TODO handle error
+// TODO handle error on provider
 
 
 void main() {

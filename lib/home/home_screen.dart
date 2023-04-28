@@ -169,11 +169,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   time: e.value?.format(context),
                 ),
               ),
-              SwitchListTile(
-                value: true,
-                title: const Text('Deteksi lokasi otomatis'),
-                onChanged: (val) {},
-              )
             ],
           ),
         ),
