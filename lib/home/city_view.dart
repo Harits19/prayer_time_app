@@ -29,7 +29,7 @@ class _CityViewState extends ConsumerState<CityView> {
   Widget build(BuildContext context) {
     final cityWatch = ref.watch(listCityState);
     final currentCityWatch = ref.watch(currentCityState);
-    final listCity = cityWatch.value ?? [];
+    final listCity = cityWatch.valueOrNull ?? [];
     var resultSearch = <CityModel>[];
     if (search.text.isNotEmpty) {
       resultSearch = listCity.getFilterResult(search.text).toList();
@@ -37,6 +37,7 @@ class _CityViewState extends ConsumerState<CityView> {
 
     return LoadingView(
       isLoading: cityWatch.isLoading || currentCityWatch.isLoading,
+      error: currentCityWatch.error ?? cityWatch.error,
       child: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(KSize.s16),
@@ -54,7 +55,7 @@ class _CityViewState extends ConsumerState<CityView> {
                     onPressed: () {
                       ref.invalidate(currentCityState);
                       ref.read(currentCityState.future);
-                      search.text = currentCityWatch.value ?? '';
+                      search.text = currentCityWatch.valueOrNull ?? '';
                       setState(() {});
                     },
                     icon: const Icon(Icons.gps_fixed),

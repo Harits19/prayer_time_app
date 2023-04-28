@@ -51,8 +51,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final prayerWatch = ref.watch(prayerTimeState);
-    final prayerTime = prayerWatch.value;
+    final prayerTimeWatch = ref.watch(prayerTimeState);
+    final prayerTime = prayerTimeWatch.valueOrNull;
     final schedule = prayerTime?.jadwal;
     final mappedPrayer =
         schedule?.toMappedTimeOfDay() ?? Jadwal().toMappedTimeOfDay();
@@ -60,7 +60,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final currentPrayer = TimeOfDay.now().currentPrayer(mappedPrayer);
     final nextPrayer = selectedPrayer?.key ?? '-';
     return LoadingView(
-      isLoading: prayerWatch.isLoading,
+      isLoading: prayerTimeWatch.isLoading,
+      error: prayerTimeWatch.error,
       child: Scaffold(
         body: SafeArea(
           child: ListView(
