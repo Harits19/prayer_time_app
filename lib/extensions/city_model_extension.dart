@@ -8,9 +8,14 @@ extension ListCityModelExtension on List<CityModel> {
         final lokasi = element.lokasi;
         if (lokasi == null) return false;
 
-        return key!.toLowerCase().contains(
+        final check1 = key!.toLowerCase().contains(
               lokasi.toLowerCase(),
             );
+        final check2 = lokasi.toLowerCase().contains(
+              key.toLowerCase(),
+            );
+
+        return check1 || check2;
       },
     ).toList();
   }
