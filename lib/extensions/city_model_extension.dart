@@ -1,6 +1,6 @@
 import 'package:prayer_time_app/models/response_city_model.dart';
 
-extension CityModelExtension on List<CityModel> {
+extension ListCityModelExtension on List<CityModel> {
   List<CityModel> getFilterResult(String? key) {
     if (key?.isEmpty ?? true) return [];
     return where(

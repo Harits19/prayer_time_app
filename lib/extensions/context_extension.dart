@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 extension BuildContextExtension on BuildContext {
@@ -10,13 +9,5 @@ extension BuildContextExtension on BuildContext {
         ),
       ),
     );
-  }
-
-  void showLoading() {
-    showDialog(
-        context: this,
-        builder: (context) => const Center(
-              child: CircularProgressIndicator(),
-            ));
   }
 }

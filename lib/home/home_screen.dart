@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/constans/k_size.dart';
 import 'package:prayer_time_app/constans/k_text_style.dart';
-import 'package:prayer_time_app/extensions/context_extension.dart';
 import 'package:prayer_time_app/extensions/int_extension.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
@@ -67,7 +66,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: ListView(
             padding: const EdgeInsets.all(KSize.s16),
             children: [
-              Text(ref.watch(selectedCityState).value ?? ''),
               Row(
                 children: [
                   Column(

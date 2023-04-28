@@ -5,7 +5,6 @@ import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/home/loading_view.dart';
 import 'package:prayer_time_app/main.dart';
 import 'package:prayer_time_app/models/response_city_model.dart';
-import 'package:prayer_time_app/services/geocoding_service.dart';
 
 class CityView extends ConsumerStatefulWidget {
   const CityView({
@@ -18,7 +17,6 @@ class CityView extends ConsumerStatefulWidget {
 
 class _CityViewState extends ConsumerState<CityView> {
   final search = TextEditingController();
-  bool isLoading = false;
 
   @override
   void dispose() {
@@ -29,7 +27,7 @@ class _CityViewState extends ConsumerState<CityView> {
   @override
   Widget build(BuildContext context) {
     final cityWatch = ref.watch(listCityState);
-    final currentCity = ref.watch(currentCityState);
+    final currentCityWatch = ref.watch(currentCityState);
     final listCity = cityWatch.value ?? [];
     var resultSearch = <CityModel>[];
     if (search.text.isNotEmpty) {
@@ -37,7 +35,7 @@ class _CityViewState extends ConsumerState<CityView> {
     }
 
     return LoadingView(
-      isLoading: cityWatch.isLoading || isLoading,
+      isLoading: cityWatch.isLoading || currentCityWatch.isLoading,
       child: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(KSize.s16),
@@ -53,13 +51,10 @@ class _CityViewState extends ConsumerState<CityView> {
                   hintText: 'Search...',
                   suffixIcon: IconButton(
                     onPressed: () {
-                      isLoading = true;
+                      ref.invalidate(currentCityState);
+                      ref.read(currentCityState.future);
+                      search.text = currentCityWatch.value ?? '';
                       setState(() {});
-                      GeocodingService.getCity().then((value) {
-                        search.text = value;
-                        isLoading = false;
-                        setState(() {});
-                      });
                     },
                     icon: const Icon(Icons.gps_fixed),
                   ),
