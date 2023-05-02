@@ -52,8 +52,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final prayerTimeWatch = ref.watch(prayerTimeState);
-    final prayerTime = prayerTimeWatch.valueOrNull;
-    final schedule = prayerTime?.jadwal;
+    final schedule = prayerTimeWatch.prayerTime?.jadwal;
     final mappedPrayer =
         schedule?.toMappedTimeOfDay() ?? Jadwal().toMappedTimeOfDay();
     selectedPrayer = TimeOfDay.now().nextPrayer(mappedPrayer);
@@ -117,7 +116,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     width: KSize.s4,
                                   ),
                                   Text(
-                                    prayerTime?.lokasi.toCapitalize() ?? '-',
+                                    prayerTimeWatch.prayerTime?.lokasi
+                                            .toCapitalize() ??
+                                        '-',
                                     style: const TextStyle(
                                       fontSize: KSize.s12,
                                     ),

@@ -3,15 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:prayer_time_app/home/home_screen.dart';
 import 'package:prayer_time_app/playground.dart';
+import 'package:prayer_time_app/services/shared_pref_service.dart';
 
 // TODO save cache to local storage
 // TODO implement widget
+// TODO add qibla
 
-void mainTemp() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPrefService.initService();
   runApp(const ProviderScope(child: MyApp()));
 }
 
-void main() {
+void mainTemp() {
   WidgetsFlutterBinding.ensureInitialized();
   HomeWidget.registerBackgroundCallback(backgroundCallback);
   runApp(const MyAppPlayground());

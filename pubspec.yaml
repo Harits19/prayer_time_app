@@ -38,13 +38,14 @@ dependencies:
   home_widget: ^0.2.0+1
   http: ^0.13.5
   intl: ^0.18.0
+  shared_preferences: ^2.1.0
 
 dev_dependencies:
-  flutter_lints: ^2.0.0
   flutter_launcher_icons: "^0.13.1"
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  
+
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
