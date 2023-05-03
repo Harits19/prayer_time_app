@@ -19,15 +19,6 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
         error: null,
       );
 
-      final currentCityWatch = await ref.watch(currentCityState.future);
-      final listCityWatch = await ref.watch(listCityState.future);
-      final filteredList = listCityWatch.getFilterResult(currentCityWatch);
-      final currentCityId = filteredList.first.id;
-
-      state = state.copyWith(
-        selectedCityId: currentCityId,
-      );
-
       final resultFromCache =
           SharedPrefService.getCache(SharePrefKey.prayerTime);
 
@@ -40,12 +31,20 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
         );
       }
 
+      final currentCityWatch = await ref.watch(currentCityState.future);
+      final listCityWatch = await ref.watch(listCityState.future);
+      final filteredList = listCityWatch.getFilterResult(currentCityWatch);
+      final currentCityId = filteredList.first.id;
+
+      state = state.copyWith(
+        selectedCityId: currentCityId,
+      );
+
       final resultFromApi = await PrayerTimeServices.getPrayerTime(
         state.selectedCityId,
       );
 
       state = state.copyWith(
-        error: null,
         isLoading: false,
         prayerTime: resultFromApi,
       );
