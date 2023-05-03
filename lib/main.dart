@@ -5,7 +5,6 @@ import 'package:prayer_time_app/home/home_screen.dart';
 import 'package:prayer_time_app/playground.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
 
-// TODO save cache to local storage
 // TODO implement widget
 // TODO add qibla
 

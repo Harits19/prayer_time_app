@@ -11,7 +11,7 @@ import 'package:prayer_time_app/home/city_view.dart';
 import 'package:prayer_time_app/home/loading_view.dart';
 import 'package:prayer_time_app/home/prayer_view.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
-import 'package:prayer_time_app/state.dart';
+import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});

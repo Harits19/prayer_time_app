@@ -1,24 +1,11 @@
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
-import 'package:prayer_time_app/services/geocoding_service.dart';
 import 'package:prayer_time_app/services/prayer_time_services.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
+import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
+import 'package:prayer_time_app/state/selected_city/selected_city_state.dart';
 
-final prayerTimeState =
-    StateNotifierProvider<PrayerTimeNotifier, PrayerTimeState>(
-  (ref) {
-    return PrayerTimeNotifier(ref)..init();
-  },
-);
-
-class PrayerTimeState {
-  final PrayerTimeModel? prayerTime;
-  final bool isLoading;
-  final Object? error;
-
-  PrayerTimeState({this.prayerTime, this.isLoading = false, this.error});
-}
 
 class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
   PrayerTimeNotifier(this.ref) : super(PrayerTimeState());
@@ -63,27 +50,3 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
     }
   }
 }
-
-final listCityState = FutureProvider(
-  (ref) => PrayerTimeServices.getAllCity(),
-);
-
-final currentCityState = FutureProvider(
-  (ref) => GeocodingService.getCity(),
-);
-final newCityIdState = StateProvider<String?>((ref) => null);
-
-final selectedCityState = FutureProvider<String>(
-  (ref) async {
-    final newCityId = ref.watch(newCityIdState);
-    if (newCityId != null) return newCityId;
-    final currentCityWatch = await ref.watch(currentCityState.future);
-    final listCityWatch = await ref.watch(listCityState.future);
-    var defaultId = '0101';
-    final filteredList = listCityWatch.getFilterResult(currentCityWatch);
-    if (filteredList.isEmpty) {
-      return defaultId;
-    }
-    return filteredList.first.id ?? defaultId;
-  },
-);
