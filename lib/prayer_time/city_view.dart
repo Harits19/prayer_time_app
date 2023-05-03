@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/constans/k_size.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
-import 'package:prayer_time_app/home/loading_view.dart';
+import 'package:prayer_time_app/prayer_time/loading_view.dart';
 import 'package:prayer_time_app/models/response_city_model.dart';
 import 'package:prayer_time_app/state/current_city/current_city_state.dart';
 import 'package:prayer_time_app/state/list_city/list_city_state.dart';

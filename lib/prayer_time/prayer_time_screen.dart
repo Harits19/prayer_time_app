@@ -7,9 +7,9 @@ import 'package:prayer_time_app/constans/k_text_style.dart';
 import 'package:prayer_time_app/extensions/int_extension.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
-import 'package:prayer_time_app/home/city_view.dart';
-import 'package:prayer_time_app/home/loading_view.dart';
-import 'package:prayer_time_app/home/prayer_view.dart';
+import 'package:prayer_time_app/prayer_time/city_view.dart';
+import 'package:prayer_time_app/prayer_time/loading_view.dart';
+import 'package:prayer_time_app/prayer_time/prayer_view.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
 import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
 
