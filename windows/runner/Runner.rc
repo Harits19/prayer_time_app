@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "Jadwal Sholat" "\0"
+            VALUE "FileDescription", "Prayer Time" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "Jadwal Sholat" "\0"
+            VALUE "InternalName", "Prayer Time" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "prayer_time_app.exe" "\0"
-            VALUE "ProductName", "Jadwal Sholat" "\0"
+            VALUE "ProductName", "Prayer Time" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
