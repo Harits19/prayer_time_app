@@ -3,6 +3,7 @@ import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
 import 'package:prayer_time_app/services/prayer_time_services.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
+import 'package:prayer_time_app/state/auto_detect_location/auto_detect_location_state.dart';
 import 'package:prayer_time_app/state/current_city/current_city_state.dart';
 import 'package:prayer_time_app/state/list_city/list_city_state.dart';
 import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
@@ -31,14 +32,16 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
         );
       }
 
-      final currentCityWatch = await ref.watch(currentCityState.future);
-      final listCityWatch = await ref.watch(listCityState.future);
-      final filteredList = listCityWatch.getFilterResult(currentCityWatch);
-      final currentCityId = filteredList.first.id;
+      if (ref.watch(autoDetectLocationState)) {
+        final currentCityWatch = await ref.watch(currentCityState.future);
+        final listCityWatch = await ref.watch(listCityState.future);
+        final filteredList = listCityWatch.getFilterResult(currentCityWatch);
+        final currentCityId = filteredList.first.id;
 
-      state = state.copyWith(
-        selectedCityId: currentCityId,
-      );
+        state = state.copyWith(
+          selectedCityId: currentCityId,
+        );
+      }
 
       final resultFromApi = await PrayerTimeServices.getPrayerTime(
         state.selectedCityId,

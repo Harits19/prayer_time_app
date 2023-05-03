@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum SharePrefKey {
   prayerTime,
+  autoDetectLocation
 }
 
 class SharedPrefService {
@@ -13,7 +14,7 @@ class SharedPrefService {
     prefs = await SharedPreferences.getInstance();
   }
 
-  static saveCache(SharePrefKey sharePrefKey, Map<String, dynamic>? json) {
+  static saveCache(SharePrefKey sharePrefKey, Object? json) {
     if (json == null) return;
     final jsonString = jsonEncode(json);
     prefs?.setString(sharePrefKey.name, jsonString);

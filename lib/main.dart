@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
-import 'package:prayer_time_app/prayer_time/prayer_time_screen.dart';
+import 'package:prayer_time_app/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:prayer_time_app/playground.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
 
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
       darkTheme: ThemeData.dark(),
-      home: const HomeScreen(),
+      home: const BottomNavigationScreen(),
     );
   }
 }
