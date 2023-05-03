@@ -6,6 +6,8 @@ class QiblaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Center(
       child: SmoothCompass(
         isQiblahCompass: true,
@@ -41,12 +43,12 @@ class QiblaScreen extends StatelessWidget {
                 // ),
 
                 AnimatedRotation(
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 0),
                     turns: (snapshot?.data?.qiblahOffset ?? 0) / 360,
                     //Place your qiblah needle here
                     child: Icon(
                       Icons.keyboard_arrow_up_rounded,
-                      size: MediaQuery.of(context).size.width,
+                      size: width > height ? height : width,
                     )),
               ],
             ),
