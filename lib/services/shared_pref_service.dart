@@ -13,7 +13,8 @@ class SharedPrefService {
     prefs = await SharedPreferences.getInstance();
   }
 
-  static saveCache(SharePrefKey sharePrefKey, Map<String, dynamic> json) {
+  static saveCache(SharePrefKey sharePrefKey, Map<String, dynamic>? json) {
+    if (json == null) return;
     final jsonString = jsonEncode(json);
     prefs?.setString(sharePrefKey.name, jsonString);
   }

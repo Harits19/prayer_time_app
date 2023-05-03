@@ -34,4 +34,7 @@ extension StringExtension on String? {
     if (hour == null || minute == null) return null;
     return TimeOfDay(hour: hour, minute: minute);
   }
+
+  bool get isNullEmpty => this?.isEmpty ?? false;
+  
 }

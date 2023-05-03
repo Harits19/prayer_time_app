@@ -6,7 +6,7 @@ import 'package:prayer_time_app/home/loading_view.dart';
 import 'package:prayer_time_app/models/response_city_model.dart';
 import 'package:prayer_time_app/state/current_city/current_city_state.dart';
 import 'package:prayer_time_app/state/list_city/list_city_state.dart';
-import 'package:prayer_time_app/state/selected_city/selected_city_state.dart';
+import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
 
 class CityView extends ConsumerStatefulWidget {
   const CityView({
@@ -68,7 +68,7 @@ class _CityViewState extends ConsumerState<CityView> {
             ...(search.text.isNotEmpty ? resultSearch : listCity).map(
               (e) => InkWell(
                 onTap: () async {
-                  ref.read(newCityIdState.notifier).state = e.id;
+                  ref.watch(prayerTimeState.notifier).updateId(e.id);
                   Navigator.pop(context);
                 },
                 child: Card(
