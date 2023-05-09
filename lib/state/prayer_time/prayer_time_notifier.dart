@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
+import 'package:prayer_time_app/extensions/datetime_extension.dart';
+import 'package:prayer_time_app/extensions/string_extension.dart';
+import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
 import 'package:prayer_time_app/services/notification_service.dart';
 import 'package:prayer_time_app/services/prayer_time_services.dart';
@@ -8,6 +12,7 @@ import 'package:prayer_time_app/state/auto_detect_location/auto_detect_location_
 import 'package:prayer_time_app/state/current_city/current_city_state.dart';
 import 'package:prayer_time_app/state/list_city/list_city_state.dart';
 import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
+import 'package:timezone/timezone.dart';
 
 class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
   PrayerTimeNotifier(this.ref) : super(PrayerTimeState());
@@ -44,13 +49,10 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
         );
       }
 
-      final resultFromApi = await PrayerTimeServices.getPrayerTime(
-        state.selectedCityId,
-      );
+      await getPrayerTime();
 
       state = state.copyWith(
         isLoading: false,
-        prayerTime: resultFromApi,
       );
 
       saveCache();
@@ -68,13 +70,10 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
       selectedCityId: id,
       isLoading: true,
     );
-    final resultFromApi = await PrayerTimeServices.getPrayerTime(
-      state.selectedCityId,
-    );
+    await getPrayerTime();
 
     state = state.copyWith(
       isLoading: false,
-      prayerTime: resultFromApi,
     );
     saveCache();
   }
@@ -84,5 +83,26 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
         SharePrefKey.prayerTime, state.prayerTime?.toJson());
   }
 
-  
+  Future<void> getPrayerTime() async {
+    final result = await PrayerTimeServices.getPrayerTime(
+      state.selectedCityId,
+    );
+    state = state.copyWith(
+      prayerTime: result,
+    );
+    final prayerTimes = (result?.jadwal ?? Jadwal()).toMappedTimeOfDay();
+    await NotificationService.cancelAll();
+    for (final prayer in prayerTimes.entries) {
+      final prayerValue = prayer.value;
+      if (prayerValue == null) throw 'Empty prayer time';
+      NotificationService.scheduleNotification(
+        TZDateTime.from(
+          DateTime.now().applied(prayerValue),
+          local,
+        ),
+        prayer.key,
+        result?.lokasi.toCapitalize() ?? '-',
+      );
+    }
+  }
 }

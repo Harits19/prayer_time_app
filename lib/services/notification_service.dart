@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
+import 'package:timezone/data/latest.dart';
+import 'package:timezone/timezone.dart';
 
 class NotificationService {
   static final _notificationService = NotificationService._internal();
@@ -21,6 +23,8 @@ class NotificationService {
       android: initializationSettingsAndroid,
     );
 
+    initializeTimeZones();
+
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
@@ -38,20 +42,36 @@ class NotificationService {
     print("called onDidReceiveBackgroundNotificationResponse");
   }
 
-  static show({required String title, required String body}) {
-    NotificationService.flutterLocalNotificationsPlugin.show(
-      TimeOfDay.now().toDouble().toInt(),
-      title,
-      body,
-      const NotificationDetails(
+  static NotificationDetails get notificationDetail {
+    return const NotificationDetails(
         android: AndroidNotificationDetails(
-          "Prayer Time",
-          "Prayer Time",
-          playSound: true,
-          sound: RawResourceAndroidNotificationSound("adzan"),
-          
-        ),
-      ),
+      "Prayer Time",
+      "Prayer Time",
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound("adzan"),
+    ));
+  }
+
+  static Future<void> scheduleNotification(
+    TZDateTime scheduleTime,
+    String prayerName,
+    String location,
+  ) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      TimeOfDay(hour: scheduleTime.hour, minute: scheduleTime.minute)
+          .toDouble(),
+      "Waktunya adzan $prayerName",
+      "Untuk wilayah $location dan sekitarnya",
+      scheduleTime,
+      notificationDetail,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
     );
+  }
+
+  static Future<void> cancelAll() {
+    return flutterLocalNotificationsPlugin.cancelAll();
   }
 }

@@ -15,6 +15,10 @@ extension TimeOfDayNullExtension on TimeOfDay? {
     return firstTime > secondTime;
   }
 
+  bool isSmaller(TimeOfDay other) {
+    return !isBigger(other);
+  }
+
   int? toDouble() {
     if (this == null) return 0;
     return this!.toDouble();

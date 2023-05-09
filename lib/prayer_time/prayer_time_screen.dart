@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/constans/k_size.dart';
 import 'package:prayer_time_app/constans/k_text_style.dart';
+import 'package:prayer_time_app/extensions/datetime_extension.dart';
 import 'package:prayer_time_app/extensions/int_extension.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
@@ -13,6 +14,7 @@ import 'package:prayer_time_app/prayer_time/prayer_view.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
 import 'package:prayer_time_app/services/notification_service.dart';
 import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
+import 'package:timezone/timezone.dart';
 
 class PrayerTimeScreen extends ConsumerStatefulWidget {
   const PrayerTimeScreen({super.key});
@@ -24,7 +26,7 @@ class PrayerTimeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
   TimeOfDay? countDown;
   Timer? timer;
-  MapEntry<String, TimeOfDay?>? selectedPrayer;
+  MapEntry<String, TimeOfDay?>? nextPrayer;
   int second = 0;
   bool notificationHasbeenShow = false;
 
@@ -38,10 +40,9 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
 
   runTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (selectedPrayer == null) return;
-      countDown = selectedPrayer?.value.different(TimeOfDay.now());
+      if (nextPrayer == null) return;
+      countDown = nextPrayer?.value.different(TimeOfDay.now());
       second = DateTime.now().second;
-
       setState(() {});
     });
   }
@@ -52,28 +53,15 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
     timer?.cancel();
   }
 
-  void showNotification(
-      MapEntry<String, TimeOfDay?>? currentPrayer, String? selectedLocation) {
-    const now = TimeOfDay(hour: 14, minute: 01);
-    if (currentPrayer == null || currentPrayer.value == null) return;
-    final isPrayerTime = now == TimeOfDay.now();
-    if (!(isPrayerTime && second == 0)) return;
-    NotificationService.show(
-      title: "Waktunya adzan ${currentPrayer.key}",
-      body: "Untuk wilayah $selectedLocation dan sekitarnya",
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final prayerTimeWatch = ref.watch(prayerTimeState);
+     final prayerTimeWatch = ref.watch(prayerTimeState);
     final schedule = prayerTimeWatch.prayerTime?.jadwal;
     final mappedPrayer = (schedule ?? Jadwal()).toMappedTimeOfDay();
-    selectedPrayer = TimeOfDay.now().nextPrayer(mappedPrayer);
+    nextPrayer = TimeOfDay.now().nextPrayer(mappedPrayer);
     final currentPrayer = TimeOfDay.now().currentPrayer(mappedPrayer);
-    final nextPrayer = selectedPrayer?.key ?? '-';
+    final nextPrayerName = nextPrayer?.key ?? '-';
     final selectedLocation = prayerTimeWatch.prayerTime?.lokasi.toCapitalize();
-    showNotification(currentPrayer, selectedLocation);
 
     return LoadingView(
       isLoading: prayerTimeWatch.isLoading,
@@ -179,7 +167,7 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
           ),
           ...mappedPrayer.entries.map(
             (e) => PrayerView(
-              isActive: e.key == nextPrayer,
+              isActive: e.key == nextPrayerName,
               prayer: e.key,
               time: e.value?.format(context),
             ),
