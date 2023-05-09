@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
+import 'package:prayer_time_app/services/notification_service.dart';
 import 'package:prayer_time_app/services/prayer_time_services.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
 import 'package:prayer_time_app/state/auto_detect_location/auto_detect_location_state.dart';
@@ -82,4 +83,6 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
     SharedPrefService.saveCache(
         SharePrefKey.prayerTime, state.prayerTime?.toJson());
   }
+
+  
 }

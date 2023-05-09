@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:prayer_time_app/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:prayer_time_app/playground.dart';
+import 'package:prayer_time_app/services/notification_service.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
 
 // TODO implement widget
@@ -11,6 +12,7 @@ import 'package:prayer_time_app/services/shared_pref_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
   await SharedPrefService.initService();
   runApp(const ProviderScope(child: MyApp()));
 }

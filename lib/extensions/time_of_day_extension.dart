@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:prayer_time_app/extensions/int_extension.dart';
 
-extension TimeOfDayExtension on TimeOfDay? {
+extension TimeOfDayExtension on TimeOfDay {
+  int toDouble() {
+    return hour * 60 + minute;
+  }
+}
+
+extension TimeOfDayNullExtension on TimeOfDay? {
   bool isBigger(TimeOfDay other) {
     final firstTime = toDouble();
     final secondTime = other.toDouble();
-    if (firstTime == null || secondTime == null) return false;
+    if (firstTime == null) return false;
     return firstTime > secondTime;
   }
 
   int? toDouble() {
-    if (this == null) return null;
-    return this!.hour * 60 + this!.minute;
+    if (this == null) return 0;
+    return this!.toDouble();
   }
 
   MapEntry<String, TimeOfDay?>? nextPrayer(
@@ -49,7 +55,7 @@ extension TimeOfDayExtension on TimeOfDay? {
     if (this == null || other == null) return null;
     final firsTime = toDouble();
     final secondTime = other.toDouble();
-    if (firsTime == null || secondTime == null) return null;
+    if (firsTime == null) return null;
     final timeDiff = (secondTime - firsTime).abs();
     final hourDif = timeDiff ~/ TimeOfDay.minutesPerHour;
     final minuteDif = timeDiff - (hourDif * TimeOfDay.minutesPerHour);
