@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
@@ -44,12 +46,14 @@ class NotificationService {
 
   static NotificationDetails get notificationDetail {
     return const NotificationDetails(
-        android: AndroidNotificationDetails(
-      "Prayer Time",
-      "Prayer Time",
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound("adzan"),
-    ));
+      android: AndroidNotificationDetails(
+        'prayer_time',
+        'flutterfcm',
+        channelDescription: "flutterfcm",
+        playSound: true,
+        sound: RawResourceAndroidNotificationSound("adzan"),
+      ),
+    );
   }
 
   static Future<void> scheduleNotification(
@@ -73,5 +77,14 @@ class NotificationService {
 
   static Future<void> cancelAll() {
     return flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  static Future<void> show() async {
+    await flutterLocalNotificationsPlugin.show(
+      Random().nextInt(10),
+      "Waktunya adzan",
+      "Untuk wilayah dan sekitarnya",
+      notificationDetail,
+    );
   }
 }

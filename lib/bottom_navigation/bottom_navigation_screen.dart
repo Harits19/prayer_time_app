@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_time_app/models/bottom_navigation_model.dart';
 import 'package:prayer_time_app/prayer_time/prayer_time_screen.dart';
 import 'package:prayer_time_app/qibla/qibla_screen.dart';
@@ -41,9 +38,9 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       )
     ];
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        
-      }),
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   NotificationService.show();
+      // }),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: (value) {
