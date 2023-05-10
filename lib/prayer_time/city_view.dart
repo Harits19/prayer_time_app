@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart' as ph;
 import 'package:prayer_time_app/constans/k_size.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/prayer_time/loading_view.dart';
@@ -8,6 +9,7 @@ import 'package:prayer_time_app/state/auto_detect_location/auto_detect_location_
 import 'package:prayer_time_app/state/current_city/current_city_state.dart';
 import 'package:prayer_time_app/state/list_city/list_city_state.dart';
 import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
+import 'package:location/location.dart';
 
 class CityView extends ConsumerStatefulWidget {
   const CityView({
@@ -53,7 +55,14 @@ class _CityViewState extends ConsumerState<CityView> {
               decoration: InputDecoration(
                 hintText: 'Search...',
                 suffixIcon: IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    var status = await Location().requestPermission();
+
+                    if (status == PermissionStatus.deniedForever) {
+                      await ph.openAppSettings();
+                      return;
+                    }
+
                     ref.invalidate(currentCityState);
                     ref.read(currentCityState.future);
                     search.text = currentCityWatch.valueOrNull ?? '';
@@ -64,7 +73,6 @@ class _CityViewState extends ConsumerState<CityView> {
               ),
             ),
           ),
-          
           SwitchListTile(
             value: ref.watch(autoDetectLocationState),
             onChanged: ref.read(autoDetectLocationState.notifier).setValue,

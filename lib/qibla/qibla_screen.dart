@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prayer_time_app/qibla/smooth_compass_view.dart';
 import 'package:smooth_compass/utils/src/compass_ui.dart';
 
 class QiblaScreen extends StatelessWidget {
@@ -9,7 +10,7 @@ class QiblaScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Center(
-      child: SmoothCompass(
+      child: SmoothCompassView(
         isQiblahCompass: true,
         compassBuilder: (context, snapshot, child) {
           return AnimatedRotation(
