@@ -31,17 +31,19 @@ class _CityViewState extends ConsumerState<CityView> {
 
   @override
   Widget build(BuildContext context) {
-    final cityWatch = ref.watch(listCityState);
+    final listCityWatch = ref.watch(listCityState);
     final currentCityWatch = ref.watch(currentCityState);
-    final listCity = cityWatch.valueOrNull ?? [];
+    final listCity = listCityWatch.valueOrNull ?? [];
     var resultSearch = <CityModel>[];
     if (search.text.isNotEmpty) {
       resultSearch = listCity.getFilterResult(search.text).toList();
     }
 
+    final isLoading = currentCityWatch.isLoading || listCityWatch.isLoading;
+
     return LoadingView(
-      isLoading: cityWatch.isLoading || currentCityWatch.isLoading,
-      error: currentCityWatch.error ?? cityWatch.error,
+      isLoading: isLoading,
+      error: currentCityWatch.error ?? listCityWatch.error,
       child: ListView(
         padding: const EdgeInsets.all(KSize.s16),
         children: [
@@ -62,7 +64,6 @@ class _CityViewState extends ConsumerState<CityView> {
                       await ph.openAppSettings();
                       return;
                     }
-
                     ref.invalidate(currentCityState);
                     ref.read(currentCityState.future);
                     search.text = currentCityWatch.valueOrNull ?? '';
@@ -78,20 +79,21 @@ class _CityViewState extends ConsumerState<CityView> {
             onChanged: ref.read(autoDetectLocationState.notifier).setValue,
             title: const Text('Deteksi otomatis lokasi saat mulai'),
           ),
-          ...(search.text.isNotEmpty ? resultSearch : listCity).map(
-            (e) => InkWell(
-              onTap: () async {
-                ref.watch(prayerTimeState.notifier).updateId(e.id);
-                Navigator.pop(context);
-              },
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(KSize.s16),
-                  child: Text(e.lokasi ?? ''),
+          if (!isLoading)
+            ...(search.text.isNotEmpty ? resultSearch : listCity).map(
+              (e) => InkWell(
+                onTap: () async {
+                  ref.watch(prayerTimeState.notifier).updateId(e.id);
+                  Navigator.pop(context);
+                },
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(KSize.s16),
+                    child: Text(e.lokasi ?? ''),
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

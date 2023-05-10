@@ -361,7 +361,7 @@ packages:
     source: hosted
     version: "4.4.0"
   location_platform_interface:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: location_platform_interface
       sha256: "62eeaf1658e92e4459b727f55a3c328eccbac8ba043fa6d262ac5286ad48384c"

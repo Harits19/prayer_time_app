@@ -5,7 +5,7 @@ class LoadingView extends StatefulWidget {
   const LoadingView({
     super.key,
     required this.child,
-    required this.isLoading,
+    this.isLoading = false,
     this.error,
   });
 
