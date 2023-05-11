@@ -353,7 +353,7 @@ packages:
     source: hosted
     version: "2.0.1"
   location:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: location
       sha256: "9051959f6f2ccadd887b28b66e9cbbcc25b6838e37cf9e894c421ccc0ebf80b5"

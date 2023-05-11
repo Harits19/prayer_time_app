@@ -9,7 +9,7 @@ import 'package:prayer_time_app/state/auto_detect_location/auto_detect_location_
 import 'package:prayer_time_app/state/current_city/current_city_state.dart';
 import 'package:prayer_time_app/state/list_city/list_city_state.dart';
 import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
-import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CityView extends ConsumerStatefulWidget {
   const CityView({
@@ -58,9 +58,9 @@ class _CityViewState extends ConsumerState<CityView> {
                 hintText: 'Search...',
                 suffixIcon: IconButton(
                   onPressed: () async {
-                    var status = await Location().requestPermission();
+                    var status = await Permission.location.request();
 
-                    if (status == PermissionStatus.deniedForever) {
+                    if (status == PermissionStatus.permanentlyDenied) {
                       await ph.openAppSettings();
                       return;
                     }

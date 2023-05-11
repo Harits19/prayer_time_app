@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/extensions/datetime_extension.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
@@ -35,6 +36,10 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
           isLoading: false,
           prayerTime: cacheModel,
         );
+      }
+      final result = await Permission.location.request();
+      if (!result.isGranted) {
+        ref.read(autoDetectLocationState.notifier).setValue(false);
       }
 
       if (ref.watch(autoDetectLocationState)) {
