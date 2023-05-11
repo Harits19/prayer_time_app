@@ -14,10 +14,10 @@ class SharedPrefService {
     prefs = await SharedPreferences.getInstance();
   }
 
-  static saveCache(SharePrefKey sharePrefKey, Object? json) {
+  static Future<void> saveCache(SharePrefKey sharePrefKey, Object? json) async{
     if (json == null) return;
     final jsonString = jsonEncode(json);
-    prefs?.setString(sharePrefKey.name, jsonString);
+    await prefs?.setString(sharePrefKey.name, jsonString);
   }
 
   static dynamic getCache(SharePrefKey sharePrefKey) {

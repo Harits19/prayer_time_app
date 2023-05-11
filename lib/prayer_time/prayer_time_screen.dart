@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/constans/k_size.dart';
 import 'package:prayer_time_app/constans/k_text_style.dart';
-import 'package:prayer_time_app/extensions/datetime_extension.dart';
 import 'package:prayer_time_app/extensions/int_extension.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
@@ -12,9 +11,7 @@ import 'package:prayer_time_app/prayer_time/city_view.dart';
 import 'package:prayer_time_app/prayer_time/loading_view.dart';
 import 'package:prayer_time_app/prayer_time/prayer_view.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
-import 'package:prayer_time_app/services/notification_service.dart';
 import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
-import 'package:timezone/timezone.dart';
 
 class PrayerTimeScreen extends ConsumerStatefulWidget {
   const PrayerTimeScreen({super.key});
@@ -55,7 +52,7 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
 
   @override
   Widget build(BuildContext context) {
-     final prayerTimeWatch = ref.watch(prayerTimeState);
+    final prayerTimeWatch = ref.watch(prayerTimeState);
     final schedule = prayerTimeWatch.prayerTime?.jadwal;
     final mappedPrayer = (schedule ?? Jadwal()).toMappedTimeOfDay();
     nextPrayer = TimeOfDay.now().nextPrayer(mappedPrayer);
@@ -169,7 +166,7 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
             (e) => PrayerView(
               isActive: e.key == nextPrayerName,
               prayer: e.key,
-              time: e.value?.format(context),
+              time: e.value?.to24Format(),
             ),
           ),
         ],

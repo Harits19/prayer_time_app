@@ -14,6 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.init();
   await SharedPrefService.initService();
+  // await HomeWidget.registerBackgroundCallback(backgroundCallback);
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -44,8 +45,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-      ]);
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,

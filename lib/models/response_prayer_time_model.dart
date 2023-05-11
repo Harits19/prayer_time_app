@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prayer_time_app/constans/k_type.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
 
 class ResponsePrayerTimeModel {
@@ -45,7 +46,7 @@ class PrayerTimeModel {
             ? Jadwal.fromJson(json['jadwal'] as Map<String, dynamic>)
             : null;
 
-  Map<String, dynamic> toJson() => {
+  Json toJson() => {
         'id': id,
         'lokasi': lokasi,
         'daerah': daerah,
