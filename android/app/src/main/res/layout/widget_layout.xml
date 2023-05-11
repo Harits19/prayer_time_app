@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#1f303d"
+    android:padding="16dp"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:padding="12dp"
+        android:textSize="12sp"
+        android:paddingBottom="2dp"
         android:text="Untuk memperbarui jadwal silahkan tekan widget"/>
 
     <LinearLayout
