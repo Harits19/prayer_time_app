@@ -4,7 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum SharePrefKey {
   prayerTime,
-  autoDetectLocation
+  autoDetectLocation,
+  lastCityId,
 }
 
 class SharedPrefService {
