@@ -13,6 +13,14 @@
         android:textSize="12sp"
         android:paddingBottom="2dp"
         android:text="Untuk memperbarui jadwal silahkan tekan widget"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:id="@+id/location"
+        android:textSize="12sp"
+        android:paddingBottom="2dp"
+        android:text=""/>
 
     <LinearLayout
         android:id="@+id/items_container"

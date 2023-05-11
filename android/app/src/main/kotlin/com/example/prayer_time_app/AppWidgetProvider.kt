@@ -46,6 +46,8 @@ class AppWidgetProvider : HomeWidgetProvider() {
                 "Isya" to jadwal.getString("isya")
             )
 
+            views.setTextViewText(R.id.location, "Lokasi ${jsonObject.getString("lokasi")}")
+
             views.removeAllViews(R.id.items_container)
             for (i in jadwalMap) {
                 val item = RemoteViews(context.packageName, R.layout.prayer_item)

@@ -42,7 +42,7 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
         ref.read(autoDetectLocationState.notifier).setValue(false);
       }
 
-      if (ref.watch(autoDetectLocationState)) {
+      if (ref.read(autoDetectLocationState)) {
         final currentCityWatch = await ref.watch(currentCityState.future);
         final listCityWatch = await ref.watch(listCityState.future);
         final filteredList = listCityWatch.getFilterResult(currentCityWatch);
