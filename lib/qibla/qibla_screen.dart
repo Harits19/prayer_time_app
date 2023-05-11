@@ -19,30 +19,6 @@ class QiblaScreen extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Image.asset(
-                //   "assets/compass.png",
-                //   fit: BoxFit.fill,
-                // ),
-                // Positioned(
-                //   top: 0,
-                //   left: 0,
-                //   right: 0,
-                //   bottom: 0,
-                //   child: AnimatedRotation(
-                //       duration: const Duration(milliseconds: 500),
-                //       turns: (snapshot?.data?.qiblahOffset ?? 0) / 360,
-                //       //Place your qiblah needle here
-                //       child: Container(
-                //         decoration: const BoxDecoration(
-                //           shape: BoxShape.circle,
-                //         ),
-                //         child: const VerticalDivider(
-                //           color: Colors.grey,
-                //           thickness: 5,
-                //         ),
-                //       )),
-                // ),
-
                 AnimatedRotation(
                     duration: const Duration(milliseconds: 0),
                     turns: (snapshot?.data?.qiblahOffset ?? 0) / 360,

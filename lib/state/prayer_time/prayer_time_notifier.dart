@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/extensions/datetime_extension.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
-import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
 import 'package:prayer_time_app/services/home_widget_service.dart';
 import 'package:prayer_time_app/services/notification_service.dart';
@@ -79,7 +77,7 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
     saveCache();
   }
 
-  void saveCache() async{
+  void saveCache() async {
     final json = state.prayerTime?.toJson();
     await SharedPrefService.saveCache(
       SharePrefKey.prayerTime,
