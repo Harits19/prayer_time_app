@@ -1,54 +1,46 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
+
+import 'package:prayer_time_app/interfaces/cache_interface.dart';
+import 'package:prayer_time_app/services/prayer_time_services.dart';
+import 'package:prayer_time_app/services/shared_pref_service.dart';
 import 'package:workmanager/workmanager.dart';
 
-const simpleTaskKey = "be.tramckrijte.workmanagerExample.simpleTask";
-const rescheduledTaskKey = "be.tramckrijte.workmanagerExample.rescheduledTask";
-const failedTaskKey = "be.tramckrijte.workmanagerExample.failedTask";
-const simpleDelayedTask = "be.tramckrijte.workmanagerExample.simpleDelayedTask";
-const simplePeriodicTask =
-    "be.tramckrijte.workmanagerExample.simplePeriodicTask";
-const simplePeriodic1HourTask =
-    "be.tramckrijte.workmanagerExample.simplePeriodic1HourTask";
+const simpleTaskKey = "simpleTask";
+const rescheduledTaskKey = "rescheduledTask";
+const failedTaskKey = "failedTask";
+const simpleDelayedTask = "simpleDelayedTask";
+const simplePeriodicTask = "simplePeriodicTask";
+const simplePeriodic1HourTask = "simplePeriodic1HourTask";
 
 @pragma(
     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
 void callbackDispatcher() {
+  Future<void> refreshPrayerTimeInBackground() async {
+    log("refreshPrayerTimeInBackground");
+    try {
+      final lastKnownCityId =
+          '0101' ?? SharedPrefService.getCache(SharePrefKey.lastCityId);
+      log(lastKnownCityId);
+      // if (lastKnownCityId is! String || lastKnownCityId.isEmpty) {
+      //   return;
+      // }
+      log("after check lastKnownCityId");
+      final result = await PrayerTimeServices.getPrayerTime(lastKnownCityId);
+      log("resultRefreshBackground ${result?.toJson()}");
+      await CacheInterface.saveCache(result, lastKnownCityId);
+    } catch (e) {
+      log("error from refreshPrayerTimeInBackground $e");
+    }
+  }
+
   Workmanager().executeTask((task, inputData) async {
+    log(task);
+    log(inputData.toString());
     switch (task) {
-      case simpleTaskKey:
-        print("$simpleTaskKey was executed. inputData = $inputData");
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setBool("test", true);
-        print("Bool from prefs: ${prefs.getBool("test")}");
-        break;
-      case rescheduledTaskKey:
-        final key = inputData!['key']!;
-        final prefs = await SharedPreferences.getInstance();
-        if (prefs.containsKey('unique-$key')) {
-          print('has been running before, task is successful');
-          return true;
-        } else {
-          await prefs.setBool('unique-$key', true);
-          print('reschedule task');
-          return false;
-        }
-      case failedTaskKey:
-        print('failed task');
-        return Future.error('failed');
-      case simpleDelayedTask:
-        print("$simpleDelayedTask was executed");
-        break;
       case simplePeriodicTask:
-        print("$simplePeriodicTask was executed");
-        break;
-      case simplePeriodic1HourTask:
-        print("$simplePeriodic1HourTask was executed");
-        break;
-      case Workmanager.iOSBackgroundTask:
-        print("The iOS background fetch was triggered");
+        await refreshPrayerTimeInBackground();
         break;
     }
-
     return Future.value(true);
   });
 }

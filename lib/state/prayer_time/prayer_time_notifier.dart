@@ -84,8 +84,7 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
   }
 
   void saveCache() async {
-    final json = state.prayerTime?.toJson();
-    await CacheInterface.saveCache(json, state.selectedCityId);
+    await CacheInterface.saveCache(state.prayerTime, state.selectedCityId);
   }
 
   Future<void> getPrayerTime() async {
@@ -95,19 +94,5 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
     state = state.copyWith(
       prayerTime: result,
     );
-    final prayerTimes = (result?.jadwal ?? Jadwal()).toMappedTimeOfDay();
-    await NotificationService.cancelAll();
-    for (final prayer in prayerTimes.entries) {
-      final prayerValue = prayer.value;
-      if (prayerValue == null) throw 'Empty prayer time';
-      NotificationService.scheduleNotification(
-        TZDateTime.from(
-          DateTime.now().applied(prayerValue),
-          local,
-        ),
-        prayer.key,
-        result?.lokasi.toCapitalize() ?? '-',
-      );
-    }
   }
 }

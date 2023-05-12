@@ -14,15 +14,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.init();
   await SharedPrefService.initService();
-  Workmanager().initialize(
+  await Workmanager().cancelAll();
+  await Workmanager().initialize(
       callbackDispatcher, // The top level function, aka callbackDispatcher
       isInDebugMode:
           true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
       );
-  Workmanager().registerPeriodicTask(
+  await Workmanager().registerPeriodicTask(
     simplePeriodicTask,
     simplePeriodicTask,
-    initialDelay: Duration(seconds: 10),
+    initialDelay: const Duration(seconds: 10),
   );
   // await HomeWidget.registerBackgroundCallback(backgroundCallback);
   runApp(const ProviderScope(child: MyApp()));

@@ -21,6 +21,6 @@ class AutoDetectLocationNotifier extends StateNotifier<bool> {
     }
 
     state = val;
-    SharedPrefService.saveCache(SharePrefKey.autoDetectLocation, val);
+    SharedPrefService.setPref(SharePrefKey.autoDetectLocation, val);
   }
 }
