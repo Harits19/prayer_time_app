@@ -1,19 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
-import 'package:prayer_time_app/extensions/datetime_extension.dart';
-import 'package:prayer_time_app/extensions/string_extension.dart';
 import 'package:prayer_time_app/interfaces/cache_interface.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
-import 'package:prayer_time_app/services/home_widget_service.dart';
-import 'package:prayer_time_app/services/notification_service.dart';
 import 'package:prayer_time_app/services/prayer_time_services.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
 import 'package:prayer_time_app/state/auto_detect_location/auto_detect_location_state.dart';
 import 'package:prayer_time_app/state/current_city/current_city_state.dart';
 import 'package:prayer_time_app/state/list_city/list_city_state.dart';
 import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
-import 'package:timezone/timezone.dart';
 
 class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
   PrayerTimeNotifier(this.ref) : super(PrayerTimeState());

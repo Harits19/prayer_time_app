@@ -5,9 +5,12 @@ import 'package:prayer_time_app/services/shared_pref_service.dart';
 class AutoDetectLocationNotifier extends StateNotifier<bool> {
   AutoDetectLocationNotifier() : super(true);
 
-  void init() {
+  void init() async{
     final res = SharedPrefService.getCache(SharePrefKey.autoDetectLocation);
-    if (res == null) return;
+    if (res == null) {
+      await SharedPrefService.setPref(SharePrefKey.autoDetectLocation, true);
+      return;
+    }
     state = res;
   }
 
@@ -19,7 +22,6 @@ class AutoDetectLocationNotifier extends StateNotifier<bool> {
         return;
       }
     }
-
     state = val;
     SharedPrefService.setPref(SharePrefKey.autoDetectLocation, val);
   }

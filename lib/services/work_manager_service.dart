@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/interfaces/cache_interface.dart';
+import 'package:prayer_time_app/services/geocoding_service.dart';
 import 'package:prayer_time_app/services/prayer_time_services.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
 import 'package:workmanager/workmanager.dart';
@@ -18,12 +20,25 @@ void callbackDispatcher() {
   Future<void> refreshPrayerTimeInBackground() async {
     log("refreshPrayerTimeInBackground");
     try {
-      final lastKnownCityId =
-          '0101' ?? SharedPrefService.getCache(SharePrefKey.lastCityId);
+      await SharedPrefService.initService();
+
+      final autoDetectLocation =
+          SharedPrefService.getCache(SharePrefKey.autoDetectLocation) ?? true;
+
+      var lastKnownCityId = SharedPrefService.getCache(SharePrefKey.lastCityId);
+      if (lastKnownCityId is! String || lastKnownCityId.isEmpty) {
+        return;
+      }
+
+      log('auto detect location $autoDetectLocation');
+
+      if (autoDetectLocation == true) {
+        final currentCity = await GeocodingService.getCity();
+        final listCity = await PrayerTimeServices.getAllCity();
+        final filteredList = listCity.getFilterResult(currentCity);
+        lastKnownCityId = filteredList.first.id;
+      }
       log(lastKnownCityId);
-      // if (lastKnownCityId is! String || lastKnownCityId.isEmpty) {
-      //   return;
-      // }
       log("after check lastKnownCityId");
       final result = await PrayerTimeServices.getPrayerTime(lastKnownCityId);
       log("resultRefreshBackground ${result?.toJson()}");
