@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,8 +8,10 @@ import 'package:prayer_time_app/services/shared_pref_service.dart';
 import 'package:prayer_time_app/services/work_manager_service.dart';
 import 'package:workmanager/workmanager.dart';
 
-// TODO auto refresh prayer time on widget
-// TODO auto detect location
+
+// TODO refactor riverpod provider
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +21,7 @@ void main() async {
   await Workmanager().initialize(
       callbackDispatcher, // The top level function, aka callbackDispatcher
       isInDebugMode:
-          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+          kDebugMode // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
       );
   await Workmanager().registerPeriodicTask(
     simplePeriodicTask,
