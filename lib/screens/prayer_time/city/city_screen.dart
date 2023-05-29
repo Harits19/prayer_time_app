@@ -23,7 +23,7 @@ class _CityViewState extends ConsumerState<CityScreen> {
     final search = ref.watch(cityViewModel.select((value) => value.search));
 
     return LoadingView(
-      isLoading: false,
+      isLoading: ref.watch(cityViewModel.select((value) => value.isLoading)),
       child: ListView(
         padding: const EdgeInsets.all(KSize.s16),
         children: [
@@ -37,7 +37,9 @@ class _CityViewState extends ConsumerState<CityScreen> {
               decoration: InputDecoration(
                 hintText: 'Search...',
                 suffixIcon: IconButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    ref.read(cityViewModel.notifier).getCurrentCity();
+                  },
                   icon: const Icon(Icons.gps_fixed),
                 ),
               ),
