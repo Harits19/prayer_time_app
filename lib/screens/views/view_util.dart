@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:prayer_time_app/main.dart';
 
 class ViewUtil {
-  static void showLoading(BuildContext context) {
+  static void showLoading() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showDialog(
-        context: context,
+        context: navigatorKey.currentContext!,
         builder: (context) => const Center(
           child: CircularProgressIndicator(),
         ),
@@ -12,9 +13,9 @@ class ViewUtil {
     });
   }
 
-  static void dismissLoading(BuildContext context) {
+  static void dismissLoading() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Navigator.pop(context);
+      Navigator.pop(navigatorKey.currentContext!);
     });
   }
 }

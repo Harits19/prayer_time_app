@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prayer_time_app/constans/k_type.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
+import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
 import 'package:prayer_time_app/models/prayer_time_detail_model.dart';
 
 class ResponsePrayerTimeModel {
@@ -54,6 +55,7 @@ class PrayerTimeModel {
         'koordinat': koordinat?.toJson(),
         'jadwal': jadwal?.toJson()
       };
+
 }
 
 class Koordinat {
@@ -152,6 +154,10 @@ class Jadwal {
       'Ashar': ashar,
       'Magrib': maghrib,
       'Isya': isya,
-    }.entries.map((e) => PrayerTimeDetailModel(name: e.key, time: e.value.toTimeOfDay())).toList();
+    }
+        .entries
+        .map((e) =>
+            PrayerTimeDetailModel(name: e.key, time: e.value.toTimeOfDay()))
+        .toList();
   }
 }

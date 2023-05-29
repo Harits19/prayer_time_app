@@ -38,8 +38,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
+      navigatorKey: navigatorKey,
       darkTheme: ThemeData.dark(),
       home: const BottomNavigationScreen(),
     );
   }
 }
+final navigatorKey = GlobalKey<NavigatorState>();

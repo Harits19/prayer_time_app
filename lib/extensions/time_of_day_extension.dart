@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prayer_time_app/extensions/int_extension.dart';
+import 'package:prayer_time_app/models/prayer_time_detail_model.dart';
 
 extension TimeOfDayExtension on TimeOfDay {
   int toDouble() {
@@ -24,12 +25,12 @@ extension TimeOfDayNullExtension on TimeOfDay? {
     return this!.toDouble();
   }
 
-  MapEntry<String, TimeOfDay?>? nextPrayer(
-      Map<String, TimeOfDay?>? mappedPrayer) {
+  PrayerTimeDetailModel? nextPrayer(
+      List<PrayerTimeDetailModel>? mappedPrayer) {
     if (mappedPrayer == null) return null;
-    MapEntry<String, TimeOfDay?>? tempNextPrayer;
-    for (final prayer in mappedPrayer.entries) {
-      final timePrayer = prayer.value;
+    PrayerTimeDetailModel? tempNextPrayer;
+    for (final prayer in mappedPrayer) {
+      final timePrayer = prayer.time;
       if (timePrayer == null) continue;
       final isSmaller = !TimeOfDay.now().isBigger(timePrayer);
       if (isSmaller) {
@@ -40,12 +41,12 @@ extension TimeOfDayNullExtension on TimeOfDay? {
     return tempNextPrayer;
   }
 
-  MapEntry<String, TimeOfDay?>? currentPrayer(
-      Map<String, TimeOfDay?>? mappedPrayer) {
+  PrayerTimeDetailModel? currentPrayer(
+       List<PrayerTimeDetailModel>? mappedPrayer) {
     if (mappedPrayer == null) return null;
-    MapEntry<String, TimeOfDay?>? tempNextPrayer;
-    for (final prayer in mappedPrayer.entries) {
-      final timePrayer = prayer.value;
+    PrayerTimeDetailModel? tempNextPrayer;
+    for (final prayer in mappedPrayer) {
+      final timePrayer = prayer.time;
       if (timePrayer == null) continue;
       final isBigger = TimeOfDay.now().isBigger(timePrayer);
       if (isBigger) {
