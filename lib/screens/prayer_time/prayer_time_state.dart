@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
 import 'package:prayer_time_app/models/prayer_time_detail_model.dart';
+import 'package:prayer_time_app/models/response_city_model.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';
 
 class PrayerTimeStateNew {
@@ -9,29 +10,41 @@ class PrayerTimeStateNew {
   final PrayerTimeDetailModel? nextPrayer;
   final PrayerTimeDetailModel? currentPrayer;
   final AsyncValue<PrayerTimeModel?> prayerTime;
-  final String selectedCityId;
+  final CityModel selectedCity;
+  final AsyncValue<List<CityModel>> listCity;
+  final AsyncValue<CityModel?> lastKnownCity;
+  final AsyncValue<String> initLoading;
 
   PrayerTimeStateNew({
     required this.countDown,
     required this.nextPrayer,
     required this.prayerTime,
-    required this.selectedCityId,
+    required this.selectedCity,
     required this.currentPrayer,
+    required this.listCity,
+    required this.lastKnownCity,
+    required this.initLoading,
   });
 
   PrayerTimeStateNew copyWith({
     Duration? countDown,
     PrayerTimeDetailModel? nextPrayer,
     AsyncValue<PrayerTimeModel?>? prayerTime,
-    String? selectedCityId,
+    CityModel? selectedCity,
     PrayerTimeDetailModel? currentPrayer,
+    AsyncValue<List<CityModel>>? listCity,
+    AsyncValue<CityModel?>? lastKnownCity,
+    AsyncValue<String>? initLoading,
   }) {
     return PrayerTimeStateNew(
       countDown: countDown ?? this.countDown,
       nextPrayer: nextPrayer ?? this.nextPrayer,
       prayerTime: prayerTime ?? this.prayerTime,
-      selectedCityId: selectedCityId ?? this.selectedCityId,
+      selectedCity: selectedCity ?? this.selectedCity,
       currentPrayer: currentPrayer ?? this.currentPrayer,
+      listCity: listCity ?? this.listCity,
+      lastKnownCity: lastKnownCity ?? this.lastKnownCity,
+      initLoading: initLoading ?? this.initLoading,
     );
   }
 }

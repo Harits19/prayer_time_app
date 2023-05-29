@@ -27,7 +27,7 @@ class PrayerTimeServices {
     return parsedResponse.data;
   }
 
-  Future<List<CityModel>> getAllCity() async {
+  Future<List<CityModel>> getListCity() async {
     final url = Uri.https(_baseUrl, '/v1/sholat/kota/semua');
     final response = await http.get(url);
 

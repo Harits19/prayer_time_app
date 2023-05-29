@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-final geocodingServiceProvider = Provider<GeocodingService>((ref) {
+final geocodingService = Provider<GeocodingService>((ref) {
   return GeocodingService();
 });
 

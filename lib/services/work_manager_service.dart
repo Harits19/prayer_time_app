@@ -34,7 +34,7 @@ void callbackDispatcher() {
 
       if (autoDetectLocation == true) {
         final currentCity = await GeocodingService().getCity();
-        final listCity = await PrayerTimeServices().getAllCity();
+        final listCity = await PrayerTimeServices().getListCity();
         final filteredList = listCity.getFilterResult(currentCity);
         lastKnownCityId = filteredList.first.id;
       }

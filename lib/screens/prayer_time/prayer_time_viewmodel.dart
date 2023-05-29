@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
-import 'package:prayer_time_app/models/response_prayer_time_model.dart';
+import 'package:prayer_time_app/models/response_city_model.dart';
 import 'package:prayer_time_app/screens/prayer_time/prayer_time_state.dart';
+import 'package:prayer_time_app/services/geocoding_service.dart';
 import 'package:prayer_time_app/services/prayer_time_services.dart';
 
 final prayerTimeViewModel =
@@ -12,20 +14,27 @@ final prayerTimeViewModel =
         (ref) {
   return PrayerTimeViewModel(
     prayerTimeServices: ref.watch(prayerTimeService),
+    geocodingService: ref.watch(geocodingService),
     PrayerTimeStateNew(
       countDown: Duration.zero,
       nextPrayer: null,
       prayerTime: const AsyncValue.data(null),
-      selectedCityId: '0101',
+      selectedCity: CityModel(id: '0101'),
       currentPrayer: null,
+      listCity: const AsyncValue.data([]),
+      lastKnownCity: const AsyncValue.data(null),
+      initLoading: const AsyncData(''),
     ),
-  )..getAllPrayerTime();
+  )..init();
 });
 
 class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
-  PrayerTimeViewModel(super.state,
-      {required PrayerTimeServices prayerTimeServices})
-      : _prayerTimeService = prayerTimeServices {
+  PrayerTimeViewModel(
+    super.state, {
+    required PrayerTimeServices prayerTimeServices,
+    required GeocodingService geocodingService,
+  })  : _prayerTimeService = prayerTimeServices,
+        _geocodingService = geocodingService {
     timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) => _setCurrentSecond(),
@@ -33,6 +42,7 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
   }
   Timer? timer;
   final PrayerTimeServices _prayerTimeService;
+  final GeocodingService _geocodingService;
 
   void _setCurrentSecond() {
     final nextPrayer = TimeOfDay.now().nextPrayer(
@@ -58,13 +68,34 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
     );
   }
 
-  void getAllPrayerTime() async {
+  init() async {
+    try {
+      state = state.copyWith(
+        initLoading: const AsyncLoading(),
+      );
+      await getListCity();
+      await getLastKnownCity();
+      await getAllPrayerTime();
+      state = state.copyWith(
+        initLoading: const AsyncData(''),
+      );
+    } catch (e) {
+      state = state.copyWith(
+        initLoading: AsyncError(
+          e,
+          StackTrace.current,
+        ),
+      );
+    }
+  }
+
+  Future<void> getAllPrayerTime() async {
     try {
       state = state.copyWith(
         prayerTime: const AsyncValue.loading(),
       );
       final result = await _prayerTimeService.getPrayerTime(
-        state.selectedCityId,
+        state.lastKnownCity.value?.id ?? state.selectedCity.id ?? '',
       );
       state = state.copyWith(
         prayerTime: AsyncValue.data(
@@ -74,6 +105,43 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
     } catch (e) {
       state = state.copyWith(
         prayerTime: AsyncValue.error(e, StackTrace.current),
+      );
+    }
+  }
+
+  Future<void> getListCity() async {
+    try {
+      state = state.copyWith(
+        listCity: const AsyncValue.loading(),
+      );
+      final result = await _prayerTimeService.getListCity();
+      state = state.copyWith(
+        listCity: AsyncData(result),
+      );
+    } catch (e) {
+      state = state.copyWith(listCity: AsyncError(e, StackTrace.current));
+    }
+  }
+
+  Future<void> getLastKnownCity() async {
+    try {
+      state = state.copyWith(
+        lastKnownCity: const AsyncLoading(),
+      );
+      final result = await _geocodingService.getCity();
+      final lastKnownCity = state.listCity.value?.getFilterResult(result);
+      if (lastKnownCity?.isEmpty ?? true) {
+        state = state.copyWith(
+          lastKnownCity: const AsyncData(null),
+        );
+      } else {
+        state = state.copyWith(
+          lastKnownCity: AsyncData(lastKnownCity!.first),
+        );
+      }
+    } catch (e) {
+      state = state.copyWith(
+        lastKnownCity: AsyncError(e, StackTrace.current),
       );
     }
   }

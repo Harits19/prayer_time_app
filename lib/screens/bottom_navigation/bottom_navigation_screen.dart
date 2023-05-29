@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/screens/bottom_navigation/bottom_navigation_viewmodel.dart';
 import 'package:prayer_time_app/models/bottom_navigation_model.dart';
 import 'package:prayer_time_app/screens/prayer_time/prayer_time_screen.dart';
-import 'package:prayer_time_app/qibla/qibla_screen.dart';
+import 'package:prayer_time_app/screens/qibla/qibla_screen.dart';
 
 class BottomNavigationScreen extends ConsumerStatefulWidget {
   const BottomNavigationScreen({super.key});

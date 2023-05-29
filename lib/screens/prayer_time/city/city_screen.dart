@@ -11,16 +11,16 @@ import 'package:prayer_time_app/state/list_city/list_city_state.dart';
 import 'package:prayer_time_app/state/prayer_time/prayer_time_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class CityView extends ConsumerStatefulWidget {
-  const CityView({
+class CityScreen extends ConsumerStatefulWidget {
+  const CityScreen({
     super.key,
   });
 
   @override
-  ConsumerState<CityView> createState() => _CityViewState();
+  ConsumerState<CityScreen> createState() => _CityViewState();
 }
 
-class _CityViewState extends ConsumerState<CityView> {
+class _CityViewState extends ConsumerState<CityScreen> {
   final search = TextEditingController();
 
   @override

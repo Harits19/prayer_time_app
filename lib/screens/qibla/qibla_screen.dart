@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prayer_time_app/qibla/smooth_compass_view.dart';
-import 'package:smooth_compass/utils/src/compass_ui.dart';
+import 'package:prayer_time_app/screens/qibla/views/smooth_compass_view.dart';
 
 class QiblaScreen extends StatelessWidget {
   const QiblaScreen({super.key});
