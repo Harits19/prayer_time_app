@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart' as ph;
 import 'package:prayer_time_app/constans/k_size.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
-import 'package:prayer_time_app/prayer_time/loading_view.dart';
+import 'package:prayer_time_app/screens/prayer_time/views/loading_view.dart';
 import 'package:prayer_time_app/models/response_city_model.dart';
 import 'package:prayer_time_app/state/auto_detect_location/auto_detect_location_state.dart';
 import 'package:prayer_time_app/state/current_city/current_city_state.dart';

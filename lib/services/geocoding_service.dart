@@ -1,10 +1,13 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-class GeocodingService {
-  GeocodingService._();
+final geocodingServiceProvider = Provider<GeocodingService>((ref) {
+  return GeocodingService();
+});
 
-  static Future<String> getCity() async {
+class GeocodingService {
+  Future<String> getCity() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw ('Location services are disabled.');

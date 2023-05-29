@@ -33,14 +33,14 @@ void callbackDispatcher() {
       log('auto detect location $autoDetectLocation');
 
       if (autoDetectLocation == true) {
-        final currentCity = await GeocodingService.getCity();
-        final listCity = await PrayerTimeServices.getAllCity();
+        final currentCity = await GeocodingService().getCity();
+        final listCity = await PrayerTimeServices().getAllCity();
         final filteredList = listCity.getFilterResult(currentCity);
         lastKnownCityId = filteredList.first.id;
       }
       log(lastKnownCityId);
       log("after check lastKnownCityId");
-      final result = await PrayerTimeServices.getPrayerTime(lastKnownCityId);
+      final result = await PrayerTimeServices().getPrayerTime(lastKnownCityId);
       log("resultRefreshBackground ${result?.toJson()}");
       await CacheInterface.saveCache(result, lastKnownCityId);
     } catch (e) {

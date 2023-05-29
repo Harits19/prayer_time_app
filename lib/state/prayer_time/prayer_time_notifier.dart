@@ -83,7 +83,7 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
   }
 
   Future<void> getPrayerTime() async {
-    final result = await PrayerTimeServices.getPrayerTime(
+    final result = await PrayerTimeServices().getPrayerTime(
       state.selectedCityId,
     );
     state = state.copyWith(

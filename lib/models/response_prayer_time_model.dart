@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prayer_time_app/constans/k_type.dart';
 import 'package:prayer_time_app/extensions/string_extension.dart';
+import 'package:prayer_time_app/models/prayer_time_detail_model.dart';
 
 class ResponsePrayerTimeModel {
   final bool? status;
@@ -139,5 +140,18 @@ class Jadwal {
       'Magrib': maghrib,
       'Isya': isya,
     }.map((key, value) => MapEntry(key, value.toTimeOfDay()));
+  }
+
+  List<PrayerTimeDetailModel> toListPrayerTimeDetail() {
+    return {
+      'Imsak': imsak,
+      'Shubuh': subuh,
+      'Terbit': terbit,
+      'Dhuha': dhuha,
+      'Dzuhur': dzuhur,
+      'Ashar': ashar,
+      'Magrib': maghrib,
+      'Isya': isya,
+    }.entries.map((e) => PrayerTimeDetailModel(name: e.key, time: e.value.toTimeOfDay())).toList();
   }
 }

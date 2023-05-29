@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prayer_time_app/screens/bottom_navigation/bottom_navigation_viewmodel.dart';
 import 'package:prayer_time_app/models/bottom_navigation_model.dart';
-import 'package:prayer_time_app/prayer_time/prayer_time_screen.dart';
+import 'package:prayer_time_app/screens/prayer_time/prayer_time_screen.dart';
 import 'package:prayer_time_app/qibla/qibla_screen.dart';
-import 'package:prayer_time_app/services/notification_service.dart';
 
-class BottomNavigationScreen extends StatefulWidget {
+class BottomNavigationScreen extends ConsumerStatefulWidget {
   const BottomNavigationScreen({super.key});
 
   @override
-  State<BottomNavigationScreen> createState() => _BottomNavigationScreenState();
+  ConsumerState<BottomNavigationScreen> createState() => _BottomNavigationScreenState();
 }
 
-class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-  int selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class _BottomNavigationScreenState extends ConsumerState<BottomNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -38,20 +33,14 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       )
     ];
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   NotificationService.show();
-      // }),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: (value) {
-          selectedIndex = value;
-          setState(() {});
-        },
+        currentIndex: ref.watch(bottomNavigationViewModel.select((value) => value.selectedIndex)),
+        onTap: ref.read(bottomNavigationViewModel.notifier).setSelectedIndex,
         items: listScreen.map((e) => e.barItem).toList(),
       ),
       body: SafeArea(
         child: IndexedStack(
-          index: selectedIndex,
+          index: ref.watch(bottomNavigationViewModel.select((value) => value.selectedIndex)),
           children: listScreen.map((e) => e.screen).toList(),
         ),
       ),
