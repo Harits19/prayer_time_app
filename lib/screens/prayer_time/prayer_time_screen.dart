@@ -20,8 +20,8 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
   @override
   Widget build(BuildContext context) {
     return LoadingView(
-      isLoading: ref.watch(
-          prayerTimeViewModel.select((value) => value.initLoading.isLoading)),
+      isLoading:
+          ref.watch(prayerTimeViewModel.select((value) => value.isLoading)),
       child: ListView(
         padding: const EdgeInsets.all(KSize.s16),
         children: [

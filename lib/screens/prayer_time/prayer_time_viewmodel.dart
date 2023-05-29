@@ -23,7 +23,6 @@ final prayerTimeViewModel =
       currentPrayer: null,
       listCity: const AsyncValue.data([]),
       lastKnownCity: const AsyncValue.data(null),
-      initLoading: const AsyncData(''),
     ),
   )..init();
 });
@@ -69,24 +68,9 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
   }
 
   init() async {
-    try {
-      state = state.copyWith(
-        initLoading: const AsyncLoading(),
-      );
-      await getListCity();
-      await getLastKnownCity();
-      await getAllPrayerTime();
-      state = state.copyWith(
-        initLoading: const AsyncData(''),
-      );
-    } catch (e) {
-      state = state.copyWith(
-        initLoading: AsyncError(
-          e,
-          StackTrace.current,
-        ),
-      );
-    }
+    await getListCity();
+    await getLastKnownCity();
+    await getAllPrayerTime();
   }
 
   Future<void> getAllPrayerTime() async {
@@ -94,8 +78,9 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
       state = state.copyWith(
         prayerTime: const AsyncValue.loading(),
       );
+
       final result = await _prayerTimeService.getPrayerTime(
-        state.lastKnownCity.value?.id ?? state.selectedCity.id ?? '',
+        (false ? state.lastKnownCity.value?.id : state.selectedCity.id) ?? '',
       );
       state = state.copyWith(
         prayerTime: AsyncValue.data(
@@ -144,6 +129,13 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
         lastKnownCity: AsyncError(e, StackTrace.current),
       );
     }
+  }
+
+  void setSelectedCity(CityModel cityModel) {
+    state = state.copyWith(
+      selectedCity: cityModel,
+    );
+    getAllPrayerTime();
   }
 
   @override

@@ -13,7 +13,6 @@ class PrayerTimeStateNew {
   final CityModel selectedCity;
   final AsyncValue<List<CityModel>> listCity;
   final AsyncValue<CityModel?> lastKnownCity;
-  final AsyncValue<String> initLoading;
 
   PrayerTimeStateNew({
     required this.countDown,
@@ -23,7 +22,6 @@ class PrayerTimeStateNew {
     required this.currentPrayer,
     required this.listCity,
     required this.lastKnownCity,
-    required this.initLoading,
   });
 
   PrayerTimeStateNew copyWith({
@@ -44,7 +42,8 @@ class PrayerTimeStateNew {
       currentPrayer: currentPrayer ?? this.currentPrayer,
       listCity: listCity ?? this.listCity,
       lastKnownCity: lastKnownCity ?? this.lastKnownCity,
-      initLoading: initLoading ?? this.initLoading,
     );
   }
+
+  bool get isLoading =>  prayerTime.isLoading || listCity.isLoading || lastKnownCity.isLoading;
 }
