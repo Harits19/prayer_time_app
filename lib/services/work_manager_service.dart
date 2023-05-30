@@ -20,12 +20,13 @@ void callbackDispatcher() {
   Future<void> refreshPrayerTimeInBackground() async {
     log("refreshPrayerTimeInBackground");
     try {
-      await SharedPrefService.initService();
+      final prefService = SharedPrefService();
+      await prefService.initService();
 
       final autoDetectLocation =
-          SharedPrefService.getCache(SharePrefKey.autoDetectLocation) ?? true;
+          prefService.getCache(SharePrefKey.autoDetectLocation) ?? true;
 
-      var lastKnownCityId = SharedPrefService.getCache(SharePrefKey.lastCityId);
+      var lastKnownCityId = prefService.getCache(SharePrefKey.lastCityId);
       if (lastKnownCityId is! String || lastKnownCityId.isEmpty) {
         return;
       }

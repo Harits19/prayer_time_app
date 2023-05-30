@@ -5,6 +5,8 @@ import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/screens/prayer_time/city/city_viewmodel.dart';
 import 'package:prayer_time_app/screens/prayer_time/prayer_time_viewmodel.dart';
 import 'package:prayer_time_app/screens/prayer_time/views/loading_view.dart';
+import 'package:prayer_time_app/screens/views/loading_view.dart';
+import 'package:prayer_time_app/screens/views/view_util.dart';
 
 class CityScreen extends ConsumerStatefulWidget {
   const CityScreen({
@@ -24,47 +26,67 @@ class _CityViewState extends ConsumerState<CityScreen> {
 
     return LoadingView(
       isLoading: ref.watch(cityViewModel.select((value) => value.isLoading)),
-      child: ListView(
-        padding: const EdgeInsets.all(KSize.s16),
+      child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: KSize.s16),
-            child: TextField(
-              controller: search,
-              onChanged: (val) {
-                setState(() {});
-              },
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                suffixIcon: IconButton(
-                  onPressed: () async {
-                    ref.read(cityViewModel.notifier).getCurrentCity();
+            padding: const EdgeInsets.all(KSize.s16),
+            child: Column(
+              children: [
+                TextField(
+                  controller: search,
+                  onChanged: (val) {
+                    setState(() {});
                   },
-                  icon: const Icon(Icons.gps_fixed),
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    suffixIcon: IconButton(
+                      onPressed: () async {
+                        ref.read(cityViewModel.notifier).getCurrentCity();
+                      },
+                      icon: const Icon(Icons.gps_fixed),
+                    ),
+                  ),
                 ),
-              ),
+                ref
+                    .watch(prayerTimeViewModel
+                        .select((value) => value.autoDetectLocation))
+                    .when(
+                      loading: () => const LoadingViewNew(),
+                      error: (error, stackTrace) =>
+                          ViewUtil.showError(context, error),
+                      data: (data) => SwitchListTile(
+                        value: data,
+                        onChanged: ref
+                            .read(prayerTimeViewModel.notifier)
+                            .setAutoDetectLocation,
+                        title: const Text('Auto detect location'),
+                      ),
+                    ),
+              ],
             ),
           ),
-          SwitchListTile(
-            value: false,
-            onChanged: (val) {},
-            title: const Text('Deteksi otomatis lokasi saat mulai'),
-          ),
-          ...(search.text.isNotEmpty
-                  ? listCity.getFilterResult(search.text).toList()
-                  : listCity)
-              .map(
-            (e) => InkWell(
-              onTap: () async {
-                ref.read(prayerTimeViewModel.notifier).setSelectedCity(e);
-                Navigator.pop(context);
-              },
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(KSize.s16),
-                  child: Text(e.lokasi ?? ''),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(KSize.s16),
+              children: [
+                ...(search.text.isNotEmpty
+                        ? listCity.getFilterResult(search.text).toList()
+                        : listCity)
+                    .map(
+                  (e) => InkWell(
+                    onTap: () async {
+                      ref.read(prayerTimeViewModel.notifier).setSelectedCity(e);
+                      Navigator.pop(context);
+                    },
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(KSize.s16),
+                        child: Text(e.lokasi ?? ''),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ],

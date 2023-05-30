@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prayer_time_app/screens/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:prayer_time_app/screens/splash/splash_screen.dart';
 import 'package:prayer_time_app/services/notification_service.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
 import 'package:prayer_time_app/services/work_manager_service.dart';
@@ -13,8 +14,8 @@ import 'package:workmanager/workmanager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.init();
-  await SharedPrefService.initService();
   await Workmanager().cancelAll();
+
   await Workmanager().initialize(
     callbackDispatcher,
     isInDebugMode: kDebugMode,
@@ -24,7 +25,12 @@ void main() async {
     simplePeriodicTask,
     initialDelay: const Duration(seconds: 10),
   );
-  runApp(const ProviderScope(child: MyApp()));
+
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -40,8 +46,9 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       navigatorKey: navigatorKey,
       darkTheme: ThemeData.dark(),
-      home: const BottomNavigationScreen(),
+      home: const SplashScreen(),
     );
   }
 }
+
 final navigatorKey = GlobalKey<NavigatorState>();

@@ -58,6 +58,10 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
+                          constraints: BoxConstraints(
+                            maxHeight:
+                                MediaQuery.of(context).size.height * 3 / 4,
+                          ),
                           builder: (_) => const CityScreen(),
                         );
                       },

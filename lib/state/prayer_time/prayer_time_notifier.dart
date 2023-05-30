@@ -23,7 +23,7 @@ class PrayerTimeNotifier extends StateNotifier<PrayerTimeState> {
       );
 
       final resultFromCache =
-          SharedPrefService.getCache(SharePrefKey.prayerTime);
+          SharedPrefService().getCache(SharePrefKey.prayerTime);
 
       if (resultFromCache != null) {
         final cacheModel = PrayerTimeModel.fromJson(resultFromCache);

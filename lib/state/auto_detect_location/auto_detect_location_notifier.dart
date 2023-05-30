@@ -6,9 +6,9 @@ class AutoDetectLocationNotifier extends StateNotifier<bool> {
   AutoDetectLocationNotifier() : super(true);
 
   void init() async{
-    final res = SharedPrefService.getCache(SharePrefKey.autoDetectLocation);
+    final res = SharedPrefService().getCache(SharePrefKey.autoDetectLocation);
     if (res == null) {
-      await SharedPrefService.setPref(SharePrefKey.autoDetectLocation, true);
+      await SharedPrefService().setPref(SharePrefKey.autoDetectLocation, true);
       return;
     }
     state = res;
@@ -23,6 +23,6 @@ class AutoDetectLocationNotifier extends StateNotifier<bool> {
       }
     }
     state = val;
-    SharedPrefService.setPref(SharePrefKey.autoDetectLocation, val);
+    SharedPrefService().setPref(SharePrefKey.autoDetectLocation, val);
   }
 }

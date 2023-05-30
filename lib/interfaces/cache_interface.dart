@@ -14,12 +14,15 @@ class CacheInterface {
       PrayerTimeModel? prayerTime, String selectedCityId) async {
     // save to pref
     final prayerTimeJson = prayerTime?.toJson();
-    await SharedPrefService.setPref(
+    final prefService = SharedPrefService();
+    await prefService.initService();
+
+    await prefService.setPref(
       SharePrefKey.prayerTime,
       prayerTimeJson,
     );
     log("after save to pref");
-    await SharedPrefService.setPref(SharePrefKey.lastCityId, selectedCityId);
+    await prefService.setPref(SharePrefKey.lastCityId, selectedCityId);
 
     // update home widget
     await HomeWidgetService.updatePrayerWidget(prayerTimeJson);

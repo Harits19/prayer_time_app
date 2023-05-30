@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum SharePrefKey {
@@ -8,20 +9,26 @@ enum SharePrefKey {
   lastCityId,
 }
 
-class SharedPrefService {
-  static SharedPreferences? prefs;
+final sharedPrefService = Provider<SharedPrefService>((ref) {
+  return SharedPrefService();
+});
 
-  static Future<void> initService() async {
+class SharedPrefService {
+   SharedPreferences? prefs;
+
+  SharedPrefService();
+
+  Future<void> initService() async {
     prefs = await SharedPreferences.getInstance();
   }
 
-  static Future<void> setPref(SharePrefKey sharePrefKey, Object? json) async {
+  Future<void> setPref(SharePrefKey sharePrefKey, Object? json) async {
     if (json == null) return;
     final jsonString = jsonEncode(json);
     await prefs?.setString(sharePrefKey.name, jsonString);
   }
 
-  static dynamic getCache(SharePrefKey sharePrefKey) {
+  dynamic getCache(SharePrefKey sharePrefKey) {
     final jsonString = prefs?.getString(sharePrefKey.name);
     if (jsonString == null) return;
     return jsonDecode(jsonString);
