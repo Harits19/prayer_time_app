@@ -11,7 +11,7 @@ final cityViewModel =
   return CityViewModel(
     geocodingService: ref.watch(geocodingService),
     listCity: ref.watch(prayerTimeViewModel.select(
-      (value) => value.listCity.value ?? [],
+      (value) => value.listCity.valueOrNull ?? [],
     )),
     CityState(
         search: TextEditingController(),

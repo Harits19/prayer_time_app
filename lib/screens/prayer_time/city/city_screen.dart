@@ -21,7 +21,7 @@ class _CityViewState extends ConsumerState<CityScreen> {
   @override
   Widget build(BuildContext context) {
     final listCity = ref.watch(
-        prayerTimeViewModel.select((value) => value.listCity.value ?? []));
+        prayerTimeViewModel.select((value) => value.listCity.valueOrNull ?? []));
     final search = ref.watch(cityViewModel.select((value) => value.searchText));
 
     return LoadingView(

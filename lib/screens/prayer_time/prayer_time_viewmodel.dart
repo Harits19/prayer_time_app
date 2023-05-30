@@ -96,9 +96,11 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
       state = state.copyWith(
         prayerTime: const AsyncValue.loading(),
       );
-      final selectedId = (state.autoDetectLocation.value!
-          ? state.lastKnownCity.value?.id
-          : state.selectedCity.id)!;
+      var selectedId = state.selectedCity.id!;
+      if (state.autoDetectLocation.valueOrNull == true &&
+          state.selectedCity.id != null) {
+        selectedId = state.selectedCity.id!;
+      }
       final result = await _prayerTimeService.getPrayerTime(
         selectedId,
       );
@@ -138,7 +140,7 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
         lastKnownCity: const AsyncLoading(),
       );
       final result = await _geocodingService.getCity();
-      final lastKnownCity = state.listCity.value?.getFilterResult(result);
+      final lastKnownCity = state.listCity.valueOrNull?.getFilterResult(result);
       if (lastKnownCity?.isEmpty ?? true) {
         state = state.copyWith(
           lastKnownCity: const AsyncData(null),
@@ -203,6 +205,9 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
       final result = await Permission.location.request();
       if (result.isPermanentlyDenied) {
         openAppSettings();
+        state = state.copyWith(
+          autoDetectLocation: const AsyncData(false),
+        );
         return;
       }
     }
