@@ -8,6 +8,7 @@ import 'package:prayer_time_app/screens/prayer_time/prayer_time_viewmodel.dart';
 import 'package:prayer_time_app/screens/prayer_time/city/city_screen.dart';
 import 'package:prayer_time_app/screens/prayer_time/views/loading_view.dart';
 import 'package:prayer_time_app/screens/prayer_time/views/prayer_view.dart';
+import 'package:prayer_time_app/screens/views/view_util.dart';
 
 class PrayerTimeScreen extends ConsumerStatefulWidget {
   const PrayerTimeScreen({super.key});
@@ -20,14 +21,11 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
   @override
   Widget build(BuildContext context) {
     return LoadingView(
-      isLoading: ref.watch(prayerTimeViewModel.select(
-        (value) => value.isLoading,
-      )),
-      error: ref.watch(
-        prayerTimeViewModel.select(
-          (value) => value.prayerTime.error,
-        ),
-      ),
+      isLoading: false ??
+          ref.watch(prayerTimeViewModel.select(
+            (value) => value.isLoading,
+          )),
+      // error: ,
       child: ListView(
         padding: const EdgeInsets.all(KSize.s16),
         children: [

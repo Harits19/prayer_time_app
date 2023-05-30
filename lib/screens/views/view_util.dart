@@ -3,18 +3,22 @@ import 'package:prayer_time_app/main.dart';
 import 'package:prayer_time_app/screens/views/loading_view.dart';
 
 class ViewUtil {
-  static void showLoading() {
+  static void showLoading(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      showDialog(
-        context: navigatorKey.currentContext!,
-        builder: (context) => const LoadingViewNew(),
-      );
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => const LoadingViewNew(),
+        );
+      }
     });
   }
 
-  static void dismissLoading() {
+  static void dismissLoading(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Navigator.pop(navigatorKey.currentContext!);
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
     });
   }
 
@@ -28,6 +32,6 @@ class ViewUtil {
         ),
       );
     });
-    return SizedBox();
+    return const SizedBox();
   }
 }

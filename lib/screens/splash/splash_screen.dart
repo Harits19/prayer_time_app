@@ -16,11 +16,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await ref.read(sharedPrefService).initService();
-      context.push(BottomNavigationScreen());
+      if (context.mounted) {
+        context.push(const BottomNavigationScreen());
+      }
     });
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Splash'),
+        child: Image.asset('assets/mosque.png'),
       ),
     );
   }
