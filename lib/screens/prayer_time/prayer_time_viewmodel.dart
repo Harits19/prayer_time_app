@@ -80,7 +80,10 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
   }
 
   init() async {
-    await getListCity();
+    await Future.value([
+      await getListCity(),
+      await getSelectedCity(),
+    ]);
     await Future.value([
       await getLastKnownCity(),
       await getAutoDetectLocationState(),
@@ -157,6 +160,12 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
       selectedCity: cityModel,
     );
     getAllPrayerTime();
+  }
+
+  Future<void> getSelectedCity() async {
+    final res = await _sharedPrefService.getCache(SharePrefKey.lastCityId);
+    if (res is! String) return;
+    state = state.copyWith(selectedCity: CityModel(id: res));
   }
 
   @override
