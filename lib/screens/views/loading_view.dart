@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 
 class LoadingViewNew extends StatelessWidget {
-  const LoadingViewNew({super.key});
+  const LoadingViewNew({
+    super.key,
+    this.size,
+  });
+
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return SizedBox.square(
+      dimension: size,
+      child: const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

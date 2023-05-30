@@ -46,21 +46,26 @@ class _CityViewState extends ConsumerState<CityScreen> {
                     ),
                   ),
                 ),
-                ref
-                    .watch(prayerTimeViewModel
-                        .select((value) => value.autoDetectLocation))
-                    .when(
-                      loading: () => const LoadingViewNew(),
-                      error: (error, stackTrace) =>
-                          ViewUtil.showError(context, error),
-                      data: (data) => SwitchListTile(
-                        value: data,
-                        onChanged: ref
-                            .read(prayerTimeViewModel.notifier)
-                            .setAutoDetectLocation,
-                        title: const Text('Auto detect location'),
-                      ),
-                    ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Auto detect location'),
+                    ref
+                        .watch(prayerTimeViewModel
+                            .select((value) => value.autoDetectLocation))
+                        .when(
+                          loading: () => const LoadingViewNew(),
+                          error: (error, stackTrace) =>
+                              ViewUtil.showError(context, error),
+                          data: (data) => Switch(
+                            value: data,
+                            onChanged: ref
+                                .read(prayerTimeViewModel.notifier)
+                                .setAutoDetectLocation,
+                          ),
+                        ),
+                  ],
+                ),
               ],
             ),
           ),

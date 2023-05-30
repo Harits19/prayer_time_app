@@ -162,6 +162,7 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
       state = state.copyWith(
         autoDetectLocation: const AsyncValue.loading(),
       );
+      await Future.delayed(const Duration(milliseconds: 500));
       bool? res = _sharedPrefService.getCache(SharePrefKey.autoDetectLocation);
       if (res == null) {
         res = true;
@@ -178,6 +179,9 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
   }
 
   void setAutoDetectLocation(bool val) async {
+    state = state.copyWith(
+      autoDetectLocation: const AsyncValue.loading(),
+    );
     if (val == true) {
       final result = await Permission.location.request();
       if (result.isPermanentlyDenied) {
