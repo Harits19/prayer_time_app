@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
 import 'package:prayer_time_app/models/prayer_time_detail_model.dart';
 import 'package:prayer_time_app/models/response_city_model.dart';
 import 'package:prayer_time_app/models/response_prayer_time_model.dart';

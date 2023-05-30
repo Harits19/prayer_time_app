@@ -22,7 +22,7 @@ class _CityViewState extends ConsumerState<CityScreen> {
   Widget build(BuildContext context) {
     final listCity = ref.watch(
         prayerTimeViewModel.select((value) => value.listCity.value ?? []));
-    final search = ref.watch(cityViewModel.select((value) => value.search));
+    final search = ref.watch(cityViewModel.select((value) => value.searchText));
 
     return LoadingView(
       isLoading: ref.watch(cityViewModel.select((value) => value.isLoading)),
@@ -33,10 +33,9 @@ class _CityViewState extends ConsumerState<CityScreen> {
             child: Column(
               children: [
                 TextField(
-                  controller: search,
-                  onChanged: (val) {
-                    setState(() {});
-                  },
+                  controller:
+                      ref.watch(cityViewModel.select((value) => value.search)),
+                  onChanged: ref.read(cityViewModel.notifier).onChange,
                   decoration: InputDecoration(
                     hintText: 'Search...',
                     suffixIcon: IconButton(
@@ -69,8 +68,8 @@ class _CityViewState extends ConsumerState<CityScreen> {
             child: ListView(
               padding: const EdgeInsets.all(KSize.s16),
               children: [
-                ...(search.text.isNotEmpty
-                        ? listCity.getFilterResult(search.text).toList()
+                ...(search.isNotEmpty
+                        ? listCity.getFilterResult(search).toList()
                         : listCity)
                     .map(
                   (e) => InkWell(

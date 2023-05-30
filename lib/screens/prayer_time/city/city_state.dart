@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prayer_time_app/models/response_city_model.dart';
 
 class CityState {
   final TextEditingController search;
   final AsyncValue<String> currentCity;
+  final String searchText;
 
   CityState({
     required this.search,
     required this.currentCity,
+    required this.searchText,
   });
 
   CityState copyWith({
     AsyncValue<String>? currentCity,
+    String? searchText,
   }) {
     return CityState(
       search: search,
       currentCity: currentCity ?? this.currentCity,
+      searchText: search.text,
     );
   }
 

@@ -14,9 +14,9 @@ final cityViewModel =
       (value) => value.listCity.value ?? [],
     )),
     CityState(
-      search: TextEditingController(),
-      currentCity: const AsyncData(''),
-    ),
+        search: TextEditingController(),
+        currentCity: const AsyncData(''),
+        searchText: ''),
   );
 });
 
@@ -43,5 +43,9 @@ class CityViewModel extends StateNotifier<CityState> {
     } catch (e) {
       state = state.copyWith(currentCity: AsyncError(e, StackTrace.current));
     }
+  }
+
+  void onChange(String val) {
+    state = state.copyWith();
   }
 }
