@@ -20,8 +20,14 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
   @override
   Widget build(BuildContext context) {
     return LoadingView(
-      isLoading:
-          ref.watch(prayerTimeViewModel.select((value) => value.isLoading)),
+      isLoading: ref.watch(prayerTimeViewModel.select(
+        (value) => value.isLoading,
+      )),
+      error: ref.watch(
+        prayerTimeViewModel.select(
+          (value) => value.prayerTime.error,
+        ),
+      ),
       child: ListView(
         padding: const EdgeInsets.all(KSize.s16),
         children: [
@@ -82,7 +88,8 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
                               ),
                               Text(
                                 ref.watch(prayerTimeViewModel.select((value) =>
-                                        value.prayerTime.value?.lokasi)) ??
+                                        value
+                                            .prayerTime.valueOrNull?.lokasi)) ??
                                     '-',
                                 style: const TextStyle(
                                   fontSize: KSize.s12,
@@ -107,7 +114,7 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
           ),
           () {
             final jadwal = ref.watch(prayerTimeViewModel
-                .select((value) => value.prayerTime.value?.jadwal));
+                .select((value) => value.prayerTime.valueOrNull?.jadwal));
 
             return Row(
               children: [
@@ -131,7 +138,7 @@ class _HomeScreenState extends ConsumerState<PrayerTimeScreen> {
             height: KSize.s16,
           ),
           ...(ref.watch(prayerTimeViewModel.select((value) => value
-                      .prayerTime.value?.jadwal
+                      .prayerTime.valueOrNull?.jadwal
                       ?.toListPrayerTimeDetail())) ??
                   [])
               .map(

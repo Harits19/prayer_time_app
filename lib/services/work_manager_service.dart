@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
-import 'package:prayer_time_app/interfaces/cache_interface.dart';
+import 'package:prayer_time_app/interfaces/prayer_time_interface.dart';
 import 'package:prayer_time_app/services/geocoding_service.dart';
 import 'package:prayer_time_app/services/prayer_time_services.dart';
 import 'package:prayer_time_app/services/shared_pref_service.dart';
@@ -43,7 +43,7 @@ void callbackDispatcher() {
       log("after check lastKnownCityId");
       final result = await PrayerTimeServices().getPrayerTime(lastKnownCityId);
       log("resultRefreshBackground ${result?.toJson()}");
-      await CacheInterface.saveCache(result, lastKnownCityId);
+      await PrayerTimeInterface().saveCache(result, lastKnownCityId);
     } catch (e) {
       log("error from refreshPrayerTimeInBackground $e");
     }

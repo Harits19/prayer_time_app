@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
+import 'package:prayer_time_app/interfaces/prayer_time_interface.dart';
 import 'package:prayer_time_app/models/response_city_model.dart';
 import 'package:prayer_time_app/screens/prayer_time/prayer_time_state.dart';
 import 'package:prayer_time_app/services/geocoding_service.dart';
@@ -18,6 +19,7 @@ final prayerTimeViewModel =
     prayerTimeServices: ref.watch(prayerTimeService),
     geocodingService: ref.watch(geocodingService),
     sharedPrefService: ref.watch(sharedPrefService),
+    prayerInterface: ref.watch(prayerTimeInterface),
     PrayerTimeStateNew(
       countDown: Duration.zero,
       nextPrayer: null,
@@ -37,9 +39,11 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
     required PrayerTimeServices prayerTimeServices,
     required GeocodingService geocodingService,
     required SharedPrefService sharedPrefService,
+    required PrayerTimeInterface prayerInterface,
   })  : _prayerTimeService = prayerTimeServices,
         _geocodingService = geocodingService,
-        _sharedPrefService = sharedPrefService {
+        _sharedPrefService = sharedPrefService,
+        _prayerInterface = prayerInterface {
     timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) => _setCurrentSecond(),
@@ -49,14 +53,15 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
   final PrayerTimeServices _prayerTimeService;
   final GeocodingService _geocodingService;
   final SharedPrefService _sharedPrefService;
+  final PrayerTimeInterface _prayerInterface;
 
   void _setCurrentSecond() {
     final nextPrayer = TimeOfDay.now().nextPrayer(
-      state.prayerTime.value?.jadwal?.toListPrayerTimeDetail(),
+      state.prayerTime.valueOrNull?.jadwal?.toListPrayerTimeDetail(),
     );
     if (nextPrayer == null) return;
     final currentPrayer = TimeOfDay.now().currentPrayer(
-        state.prayerTime.value?.jadwal?.toListPrayerTimeDetail());
+        state.prayerTime.valueOrNull?.jadwal?.toListPrayerTimeDetail());
 
     final nextPrayerTime = nextPrayer.time;
     final now = DateTime.now();
@@ -88,22 +93,25 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
       state = state.copyWith(
         prayerTime: const AsyncValue.loading(),
       );
-
+      final selectedId = (state.autoDetectLocation.value!
+          ? state.lastKnownCity.value?.id
+          : state.selectedCity.id)!;
       final result = await _prayerTimeService.getPrayerTime(
-        (state.autoDetectLocation.value!
-                ? state.lastKnownCity.value?.id
-                : state.selectedCity.id) ??
-            '',
+        selectedId,
       );
+
+      await _prayerInterface.saveCache(result, selectedId);
       state = state.copyWith(
         prayerTime: AsyncValue.data(
           result,
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
+      print('get error $e');
       state = state.copyWith(
-        prayerTime: AsyncValue.error(e, StackTrace.current),
+        prayerTime: AsyncError(e, StackTrace.current),
       );
+      // rethrow;
     }
   }
 
