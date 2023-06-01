@@ -26,6 +26,7 @@ class _CityViewState extends ConsumerState<CityScreen> {
 
     return LoadingView(
       isLoading: ref.watch(cityViewModel.select((value) => value.isLoading)),
+      error: ref.watch(cityViewModel.select((value) => value.error)),
       child: Column(
         children: [
           Padding(

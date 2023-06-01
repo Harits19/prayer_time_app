@@ -24,4 +24,5 @@ class CityState {
   }
 
   bool get isLoading => currentCity.isLoading;
+  Object? get error => currentCity.error;
 }

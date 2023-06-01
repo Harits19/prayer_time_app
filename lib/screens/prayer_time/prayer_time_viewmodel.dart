@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,7 @@ import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/extensions/time_of_day_extension.dart';
 import 'package:prayer_time_app/interfaces/prayer_time_interface.dart';
 import 'package:prayer_time_app/models/response_city_model.dart';
+import 'package:prayer_time_app/models/response_prayer_time_model.dart';
 import 'package:prayer_time_app/screens/prayer_time/prayer_time_state.dart';
 import 'package:prayer_time_app/services/geocoding_service.dart';
 import 'package:prayer_time_app/services/prayer_time_services.dart';
@@ -84,10 +86,8 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
       await getListCity(),
       await getSelectedCity(),
     ]);
-    await Future.value([
-      await getLastKnownCity(),
-      await getAutoDetectLocationState(),
-    ]);
+    await getAutoDetectLocationState();
+    await getLastKnownCity();
     await getAllPrayerTime();
   }
 
@@ -101,9 +101,21 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
           state.selectedCity.id != null) {
         selectedId = state.selectedCity.id!;
       }
+
+      final resultCache = _sharedPrefService.getCache(SharePrefKey.prayerTime);
+      if (resultCache != null) {
+        log('resultCache $resultCache');
+        await Future.delayed(const Duration(seconds: 1));
+        final resultCacheModel = PrayerTimeModel.fromJson(resultCache);
+        state = state.copyWith(
+          prayerTime: AsyncData(resultCacheModel),
+        );
+      }
+
       final result = await _prayerTimeService.getPrayerTime(
         selectedId,
       );
+      log('resultApi $result');
 
       await _prayerInterface.saveCache(result, selectedId);
       state = state.copyWith(
@@ -135,6 +147,7 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
   }
 
   Future<void> getLastKnownCity() async {
+    if (state.autoDetectLocation.valueOrNull == false) return;
     try {
       state = state.copyWith(
         lastKnownCity: const AsyncLoading(),

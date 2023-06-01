@@ -49,4 +49,7 @@ class PrayerTimeStateNew {
 
   bool get isLoading =>
       prayerTime.isLoading || listCity.isLoading || lastKnownCity.isLoading;
+
+  Object? get error =>
+      prayerTime.error ?? listCity.error ?? lastKnownCity.error;
 }
