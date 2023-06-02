@@ -24,4 +24,5 @@ Project about islamic prayer time and qibla app using Flutter. You can fork this
 # Demo
 
 ![Demo](https://raw.githubusercontent.com/Harits19/prayer_time_app/main/demo.gif)
-  
+
+![demo-widget.gif](https://github.com/Harits19/prayer_time_app/blob/main/demo-widget.gif?raw=true)
