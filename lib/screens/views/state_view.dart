@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:prayer_time_app/extensions/context_extension.dart';
 
-class LoadingView extends StatefulWidget {
-  const LoadingView({
+class StateView extends StatefulWidget {
+  const StateView({
     super.key,
     required this.child,
     this.isLoading = false,
@@ -14,12 +14,12 @@ class LoadingView extends StatefulWidget {
   final Object? error;
 
   @override
-  State<LoadingView> createState() => _LoadingViewState();
+  State<StateView> createState() => _StateViewState();
 }
 
-class _LoadingViewState extends State<LoadingView> {
+class _StateViewState extends State<StateView> {
   @override
-  void didUpdateWidget(covariant LoadingView oldWidget) {
+  void didUpdateWidget(covariant StateView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.error != widget.error && widget.error != null) {
       Future.delayed(Duration.zero).then((value) {

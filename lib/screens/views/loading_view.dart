@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LoadingViewNew extends StatelessWidget {
-  const LoadingViewNew({
+class LoadingView extends StatelessWidget {
+  const LoadingView({
     super.key,
     this.size,
   });

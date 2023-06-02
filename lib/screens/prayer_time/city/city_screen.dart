@@ -4,7 +4,7 @@ import 'package:prayer_time_app/constans/k_size.dart';
 import 'package:prayer_time_app/extensions/city_model_extension.dart';
 import 'package:prayer_time_app/screens/prayer_time/city/city_viewmodel.dart';
 import 'package:prayer_time_app/screens/prayer_time/prayer_time_viewmodel.dart';
-import 'package:prayer_time_app/screens/prayer_time/views/loading_view.dart';
+import 'package:prayer_time_app/screens/views/state_view.dart';
 import 'package:prayer_time_app/screens/views/loading_view.dart';
 import 'package:prayer_time_app/screens/views/view_util.dart';
 
@@ -20,11 +20,11 @@ class CityScreen extends ConsumerStatefulWidget {
 class _CityViewState extends ConsumerState<CityScreen> {
   @override
   Widget build(BuildContext context) {
-    final listCity = ref.watch(
-        prayerTimeViewModel.select((value) => value.listCity.valueOrNull ?? []));
+    final listCity = ref.watch(prayerTimeViewModel
+        .select((value) => value.listCity.valueOrNull ?? []));
     final search = ref.watch(cityViewModel.select((value) => value.searchText));
 
-    return LoadingView(
+    return StateView(
       isLoading: ref.watch(cityViewModel.select((value) => value.isLoading)),
       error: ref.watch(cityViewModel.select((value) => value.error)),
       child: Column(
@@ -55,7 +55,7 @@ class _CityViewState extends ConsumerState<CityScreen> {
                         .watch(prayerTimeViewModel
                             .select((value) => value.autoDetectLocation))
                         .when(
-                          loading: () => const LoadingViewNew(),
+                          loading: () => const LoadingView(),
                           error: (error, stackTrace) =>
                               ViewUtil.showError(context, error),
                           data: (data) => Switch(

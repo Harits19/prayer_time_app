@@ -8,7 +8,7 @@ class ViewUtil {
       if (context.mounted) {
         showDialog(
           context: context,
-          builder: (context) => const LoadingViewNew(),
+          builder: (context) => const LoadingView(),
         );
       }
     });
