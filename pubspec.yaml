@@ -39,6 +39,7 @@ dependencies:
   home_widget: ^0.2.0+1
   http: ^0.13.5
   intl: ^0.18.0
+  location: ^4.4.0
   permission_handler: ^10.2.0
   shared_preferences: ^2.1.0
   smooth_compass: ^2.0.17

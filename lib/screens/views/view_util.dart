@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prayer_time_app/main.dart';
 import 'package:prayer_time_app/screens/views/loading_view.dart';
 
 class ViewUtil {

@@ -36,12 +36,12 @@ class NotificationService {
   }
 
   static void onDidReceiveNotificationResponse(NotificationResponse response) {
-    print("called onDidReceiveNotificationResponse");
+    debugPrint("called onDidReceiveNotificationResponse");
   }
 
   static void onDidReceiveBackgroundNotificationResponse(
       NotificationResponse response) {
-    print("called onDidReceiveBackgroundNotificationResponse");
+    debugPrint("called onDidReceiveBackgroundNotificationResponse");
   }
 
   static NotificationDetails get notificationDetail {

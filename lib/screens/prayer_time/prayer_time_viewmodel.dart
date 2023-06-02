@@ -124,7 +124,7 @@ class PrayerTimeViewModel extends StateNotifier<PrayerTimeStateNew> {
         ),
       );
     } on Exception catch (e) {
-      print('get error $e');
+      debugPrint('get error $e');
       state = state.copyWith(
         prayerTime: AsyncError(e, StackTrace.current),
       );
