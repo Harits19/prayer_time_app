@@ -22,27 +22,22 @@ class ResponsePrayerTimeModel {
 }
 
 class PrayerTimeModel {
-  final String? id;
+  final int? id;
   final String? lokasi;
   final String? daerah;
-  final Koordinat? koordinat;
   final Jadwal? jadwal;
 
   PrayerTimeModel({
     this.id,
     this.lokasi,
     this.daerah,
-    this.koordinat,
     this.jadwal,
   });
 
   PrayerTimeModel.fromJson(Map<String, dynamic> json)
-      : id = json['id'] as String?,
+      : id = json['id'] as int?,
         lokasi = json['lokasi'] as String?,
         daerah = json['daerah'] as String?,
-        koordinat = (json['koordinat'] as Map<String, dynamic>?) != null
-            ? Koordinat.fromJson(json['koordinat'] as Map<String, dynamic>)
-            : null,
         jadwal = (json['jadwal'] as Map<String, dynamic>?) != null
             ? Jadwal.fromJson(json['jadwal'] as Map<String, dynamic>)
             : null;
@@ -51,7 +46,6 @@ class PrayerTimeModel {
         'id': id,
         'lokasi': lokasi,
         'daerah': daerah,
-        'koordinat': koordinat?.toJson(),
         'jadwal': jadwal?.toJson()
       };
 }
